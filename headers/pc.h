@@ -1,5 +1,5 @@
 #pragma once
-#include "PCInterface.h"
+#include "pc-interface.h"
 
 class PC {
 public:

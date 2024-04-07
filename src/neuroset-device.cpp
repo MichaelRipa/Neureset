@@ -1,4 +1,4 @@
-#include "NeurosetDevice.h"
+#include "neuroset-device.h"
 
 NeurosetDevice::NeurosetDevice() : batteryLevel(100), connectionStatus(true) {}
 

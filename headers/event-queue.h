@@ -1,7 +1,7 @@
 #ifndef EVENTQUEUE_H
 #define EVENTQUEUE_H
 
-#include "Event.h"
+#include "event.h"
 #include <vector>
 using namespace std;
 

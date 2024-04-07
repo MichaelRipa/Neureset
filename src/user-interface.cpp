@@ -1,4 +1,4 @@
-#include "UserInterface.h"
+#include "user-interface.h"
 
 UserInterface::UserInterface() : currentMenu(0), timer(0.0), progressIndicator(0.0) {}
 

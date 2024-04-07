@@ -1,4 +1,4 @@
-#include "EEGHeadset.h"
+#include "eeg-headset.h"
 
 EEGHeadset::EEGHeadset() : contactStatus(false) {}
 

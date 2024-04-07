@@ -1,5 +1,5 @@
 #pragma once
-#include "Session.h"
+#include "session.h"
 
 class NeurosetDevice {
 public:
