@@ -29,7 +29,47 @@ private:
     Model* model;
 
 private slots:
+
     void helloWorld();
+
+    void render();
+
+    // --- Neureset device ---
+    void handleStartSessionButtonPressed();
+    void handleSessionLogsButtonPressed();
+    void handleTimeAndDateButtonPressed();
+
+    void handleInSessionPauseButtonPressed();
+    void handleInSessionStartButtonPressed();
+    void handleInSessionStopButtonPressed();
+
+    void handleSessionCompleteBackButtonPressed();
+    void handleSessionIncompleteBackButtonPressed();
+
+
+    void handleSessionLogsBackButtonPressed();
+    void handleSessionLogsClearAllButtonPressed();
+    void handleSessionLogsUploadAllButtonPressed();
+
+    void handleSaveDateAndTimeChangesButtonPressed();
+    void handleDateAndTimeBackButtonPressed();
+
+    void handlePowerButtonPressed();
+
+    // --- Computer ---
+    void handleComputerSessionSelectedChanged();
+    void handleComputerSiteSelectedChanged();
+
+
+    // --- Admin panel ---
+    void handleApplyBandRangeToAllSitesButtonPressed();
+    void handleChargeBatteryButtonPressed();
+    void handleConnectButtonPressed();
+    void handleDisconnectButtonPressed();
+
+    void handleWaveSettingsBandRangeSelectedChanged();
+    void handleWaveSettingsSiteSelectedChanged();
+
 
 };
 #endif // MAINWINDOW_H

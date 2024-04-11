@@ -20,6 +20,11 @@ public:
     Model();
     ~Model();
 
+
+signals:
+    void modelChanged();
+
+
 private:
     static int handleEventsFrequency; // How often to handle events in queue, in ms
 

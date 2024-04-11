@@ -936,7 +936,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="deviceOffPage"/>
      <widget class="QWidget" name="mainMenuPage">
@@ -6300,7 +6300,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QPushButton" name="saveChangesButton">
+           <widget class="QPushButton" name="saveDateAndTimeChangesButton">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -12932,7 +12932,7 @@ RANGE TO ALL SITES</string>
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="adminPanel_2" native="true">
+   <widget class="QWidget" name="computer" native="true">
     <property name="geometry">
      <rect>
       <x>880</x>
