@@ -11,6 +11,8 @@ such as any state that the controller needs to grab when rendering the UI.
 #include <QTimer>
 #include <event-queue.h>
 #include <event.h>
+#include <neureset-device.h>
+#include <eeg-headset.h>
 
 class Model: public QObject
 {
@@ -27,6 +29,9 @@ signals:
 
 private:
     static int handleEventsFrequency; // How often to handle events in queue, in ms
+
+    NeuresetDevice* neuresetDevice;
+    EEGHeadset* eegHeadset;
 
     QList<Event*> events;
     // EventQueue* eventQueue;  <--- Do we really need an eventsQueue class? Otherwise just list is simpler
