@@ -4,11 +4,11 @@ EEGHeadset::EEGHeadset() : contactStatus(false) {}
 
 EEGHeadset::~EEGHeadset() {}
 
-bool EEGHeadset::checkContact() const {
+bool EEGHeadset::isConnected() const {
     return contactStatus;
 }
 
-double EEGHeadset::getSignal() {
+std::vector<double> EEGHeadset::getSignal(int siteIndex) {
     // Placeholder implementation
-    return 0.0;
+    return std::vector<double>();
 }

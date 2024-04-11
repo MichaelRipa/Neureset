@@ -17,7 +17,7 @@ class Model: public QObject
 Q_OBJECT
 
 public:
-    Model();
+    Model(int numSites);
     ~Model();
 
 

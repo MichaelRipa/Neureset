@@ -6,7 +6,7 @@
 int Model::handleEventsFrequency = 100;
 
 
-Model::Model()
+Model::Model(int numSites)
     : handleEventsTimer(new QTimer(this))
 {
 

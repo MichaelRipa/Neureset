@@ -2,12 +2,13 @@
 
 #include "main-window.h"
 #include "ui_main-window.h"
+#include "globals.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    model = new Model();
+    model = new Model(NUM_SITES);
 
     ui->setupUi(this);
 
