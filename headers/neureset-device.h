@@ -1,9 +1,10 @@
 #pragma once
 #include "session.h"
+#include "eeg-headset.h"
 
 class NeuresetDevice {
 public:
-    NeuresetDevice(Headset* headset);
+    NeuresetDevice(EEGHeadset* headset);
     ~NeuresetDevice();
     bool getSessionStatus();
     void startSession();
@@ -14,7 +15,7 @@ public:
     
 private:
     Session* session;
-    Headset* headset;
+    EEGHeadset* headset;
     int batteryLevel;
     bool connectionStatus;
 };

@@ -10,10 +10,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     model = new Model(NUM_SITES);
 
+
     ui->setupUi(this);
 
     // ---- Connections ----
     connect(model, SIGNAL(modelChanged()), this, SLOT(render()));
+
 
 
     // Testing
@@ -34,7 +36,7 @@ void MainWindow::render() {
 
 void MainWindow::handleStartSessionButtonPressed()
 {
-
+  //model->getNeureset
 }
 
 void MainWindow::handleSessionLogsButtonPressed()

@@ -21,7 +21,7 @@ SOURCES += \
     src/event.cpp \
     src/globals.cpp \
     src/interface.cpp \
-    src/neuroset-device.cpp \
+    src/neureset-device.cpp \
     src/pc.cpp \
     src/pc-interface.cpp \
     src/session.cpp \
@@ -39,7 +39,7 @@ HEADERS += \
     headers/event.h \
     headers/globals.h \
     headers/interface.h \
-    headers/neuroset-device.h \
+    headers/neureset-device.h \
     headers/pc.h \
     headers/pc-interface.h \
     headers/session.h \
