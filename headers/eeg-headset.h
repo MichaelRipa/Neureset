@@ -5,7 +5,7 @@
 
 class EEGHeadset {
 public:
-    EEGHeadset();
+    EEGHeadset(int numSites);
     ~EEGHeadset();
     bool isConnected() const;
     int getBandRangeAtSite(int siteIndex);

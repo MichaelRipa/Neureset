@@ -1,6 +1,7 @@
 #include "eeg-headset.h"
 
-EEGHeadset::EEGHeadset() : contactStatus(false) {}
+EEGHeadset::EEGHeadset(int numSites)
+    :  contactStatus(false) {}
 
 EEGHeadset::~EEGHeadset() {}
 
