@@ -2,7 +2,8 @@
 #include <vector>
 #include <QDebug>
 
-NeuresetDevice::NeuresetDevice(EEGHeadset* headset) : batteryLevel(100), connected(true) {
+NeuresetDevice::NeuresetDevice(Model* model, EEGHeadset* headset)
+    : model(model), batteryLevel(100), connected(true) {
   this->headset = headset;
 }
 

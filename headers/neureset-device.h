@@ -3,9 +3,11 @@
 #include "eeg-headset.h"
 #include "globals.h"
 
+class Model; // Forward reference
+
 class NeuresetDevice {
 public:
-    NeuresetDevice(EEGHeadset* headset);
+    NeuresetDevice(Model* model, EEGHeadset* headset);
     ~NeuresetDevice();
     SessionStatus getSessionStatus();
     void startSession();
@@ -16,6 +18,7 @@ public:
     void checkConnection();
     
 private:
+    Model* model;
     Session* session;
     EEGHeadset* headset;
     int batteryLevel;

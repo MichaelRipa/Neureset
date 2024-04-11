@@ -22,6 +22,8 @@ public:
     Model(int numSites);
     ~Model();
 
+    void stateChanged();
+
     NeuresetDevice* getNeuresetDevice();
     EEGHeadset* getEEGHeadset();
 

@@ -10,8 +10,8 @@ Model::Model(int numSites)
     : handleEventsTimer(new QTimer(this))
 {
 
-    eegHeadset = new EEGHeadset(numSites);
-    neuresetDevice = new NeuresetDevice(eegHeadset);
+    eegHeadset = new EEGHeadset(this, numSites);
+    neuresetDevice = new NeuresetDevice(this, eegHeadset);
 
     // Set up callback connections
     connect(handleEventsTimer, SIGNAL(timeout()), this, SLOT(handleEvents()));
@@ -23,6 +23,13 @@ Model::Model(int numSites)
 Model::~Model()
 {
 }
+
+// Called by anywhere in business logic whenever any model state changes. The UI
+// picks this up and rerenders.
+void Model::stateChanged() {
+    emit modelChanged();
+}
+
 
 NeuresetDevice *Model::getNeuresetDevice()
 {
