@@ -24,6 +24,16 @@ Model::~Model()
 {
 }
 
+NeuresetDevice *Model::getNeuresetDevice()
+{
+    return neuresetDevice;
+}
+
+EEGHeadset *Model::getEEGHeadset()
+{
+    return eegHeadset;
+}
+
 
 void Model::handleEvents()
 {
