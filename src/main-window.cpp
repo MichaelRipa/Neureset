@@ -36,7 +36,8 @@ void MainWindow::render() {
 
 void MainWindow::handleStartSessionButtonPressed()
 {
-  //model->getNeureset
+  model->getNeuresetDevice()->startSession();
+  render();
 }
 
 void MainWindow::handleSessionLogsButtonPressed()
