@@ -1,30 +1,36 @@
 #include "neureset-device.h"
+#include <vector>
+#include <QDebug>
 
-NeuresetDevice::NeuresetDevice(Headset* headset) : batteryLevel(100), connectionStatus(true) {
+NeuresetDevice::NeuresetDevice(EEGHeadset* headset) : batteryLevel(100), connected(true) {
   this->headset = headset;
 }
+
 NeuresetDevice::~NeuresetDevice() {}
 
 void NeuresetDevice::startSession() {
   // Implementation for starting a session
-  bool connected = headset->checkConnection();
+  bool connected = headset->isConnected();
   if (connected) {
-    sessionStatus = true; 
+    sessionStatus = SessionStatus::InProgress; 
+    currentScreen = Screen::InSession;
     session = new Session();
-    //eventQueue.addEvent(Event(SessionRunning, ... clock.getTime())); // This event self replicates every time step until session ends or is stopped
-    vector<double> baseline = session->calculateBaselineAvg(headset);
-session->applyTreatment(headset);
+    //std::vector<double> baseline = session->calculateBaselineAvg(headset);
+  //session->applyTreatment(headset);
   }
   else {
-    cout << "The headset isn't connected" << endl;
+    qDebug("The headset isn't connected");
   }
+  // TODO: Connect back to UI
 }
 
-
+void NeuresetDevice::userPauseSession() {
+  // Implementation for pausing a session when user specifies
+  
 }
 
-void NeuresetDevice::pauseSession() {
-    // Implementation for pausing a session
+void NeuresetDevice::connectionLossPauseSession() {
+  // Implementation for pausing a session when headset disconnected
 }
 
 void NeuresetDevice::endSession() {
@@ -39,6 +45,6 @@ void NeuresetDevice::checkConnection() {
     // Implementation for checking connection status
 }
 
-void NeuresetDevice::getSessionStatus() {
+SessionStatus NeuresetDevice::getSessionStatus() {
   return sessionStatus;
 }

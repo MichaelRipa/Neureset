@@ -1,7 +1,7 @@
 #ifndef EEGHEADSET_H
 #define EEGHEADSET_H
 
-#import <vector>
+#include <vector>
 
 class EEGHeadset {
 public:

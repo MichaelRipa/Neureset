@@ -11,7 +11,7 @@ Model::Model(int numSites)
 {
 
     eegHeadset = new EEGHeadset(numSites);
-    neuresetDevice = new neuresetDevice(eegHeadset);
+    neuresetDevice = new NeuresetDevice(eegHeadset);
 
     // Set up callback connections
     connect(handleEventsTimer, SIGNAL(timeout()), this, SLOT(handleEvents()));
