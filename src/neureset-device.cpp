@@ -1,11 +1,11 @@
 #include "neureset-device.h"
 #include <vector>
 #include <QDebug>
+#include <model.h>
 
 NeuresetDevice::NeuresetDevice(Model* model, EEGHeadset* headset)
-    : model(model), batteryLevel(100), connected(true) {
-  this->headset = headset;
-}
+    : model(model), headset(headset), batteryLevel(100), connected(true)
+{}
 
 NeuresetDevice::~NeuresetDevice() {}
 
@@ -18,11 +18,11 @@ void NeuresetDevice::startSession() {
     session = new Session();
     //std::vector<double> baseline = session->calculateBaselineAvg(headset);
   //session->applyTreatment(headset);
+    model->stateChanged();
   }
   else {
     qDebug("The headset isn't connected");
   }
-  // TODO: Connect back to UI
 }
 
 void NeuresetDevice::userPauseSession() {
