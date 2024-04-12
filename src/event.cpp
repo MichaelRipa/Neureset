@@ -1,8 +1,8 @@
 #include "event.h"
 
 
-Event::Event(EventType type, int timeOffset)
-: type(type), timeOffset(timeOffset)
+Event::Event(EventType type, int time)
+: type(type), time(time)
 {}
 
 
@@ -10,6 +10,6 @@ EventType Event::getType() {
   return type;
 }
 
-int Event::getTimeOffset() const {
-  return timeOffset;
+int Event::getTime() const {
+  return time;
 }

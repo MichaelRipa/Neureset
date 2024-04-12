@@ -7,10 +7,10 @@
 
 class Event {
   public:
-    Event(EventType type, int timeOffset);
+    Event(EventType type, int time);
 
     EventType getType();
-    int getTimeOffset() const;
+    int getTime() const;
 
   private:
     EventType type;
