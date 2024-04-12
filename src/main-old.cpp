@@ -76,3 +76,9 @@ atomic<bool> simulateNeuroset(true);
 //  return 0;
 
 //}
+
+//addEvent(baselineFrequencyComp, 1min)
+
+//handleEvents():
+//    Go through each event. If ready to run, remove from vector and run the callback computeBaselineFreq()
+

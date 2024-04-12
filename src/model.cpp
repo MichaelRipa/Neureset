@@ -24,6 +24,15 @@ Model::~Model()
 {
 }
 
+void Model::handleEvents()
+{
+    qDebug("Handling events.");
+}
+
+void Model::addToEventQueue(Event *event) {
+    eventQueue.push_back(event);
+}
+
 // Called by anywhere in business logic whenever any model state changes. The UI
 // picks this up and rerenders.
 void Model::stateChanged() {
@@ -42,7 +51,3 @@ EEGHeadset *Model::getEEGHeadset()
 }
 
 
-void Model::handleEvents()
-{
-    qDebug("Handling events.");
-}

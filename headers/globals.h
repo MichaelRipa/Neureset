@@ -9,3 +9,4 @@ enum class Battery { Dead, Alive, Charging};
 enum class ConnectionStatus { Connected, Disconnected};
 enum class Screen {MainMenu, InSession, SessionErased, SessionCompleted, SessionLogs, DateAndTime, Off};
 enum class Band { Alpha, Beta, Delta, Theta};
+enum class EventType { CalculateBaselineAverages };

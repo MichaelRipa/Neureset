@@ -1,14 +1,15 @@
 #include "event.h"
 
 
-int Event::getEventType() {
-  return eventType;
+Event::Event(EventType type, int timeOffset)
+: type(type), timeOffset(timeOffset)
+{}
+
+
+EventType Event::getType() {
+  return type;
 }
 
-int Event::getTime() const {
-  return time;      
-}
-
-std::any Event::getEventSource(){
-  return eventSource;
+int Event::getTimeOffset() const {
+  return timeOffset;
 }

@@ -3,17 +3,18 @@
 #include <variant>
 #include <memory>
 #include <any>
+#include "globals.h"
 
 class Event {
   public:
-    Event(int t, int type, std::any source) : time(t), eventType(type), eventSource(source) {}
-    int getEventType();
-    int getTime() const;
-    std::any getEventSource();
+    Event(EventType type, int timeOffset);
+
+    EventType getType();
+    int getTimeOffset() const;
+
   private:
-    int eventType;
-    int time;
-    std::any eventSource; // This will hold a pointer reference to the object to be acted upon when the event takes place.
+    EventType type;
+    int timeOffset;
 };
 
 #endif 

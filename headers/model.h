@@ -13,6 +13,7 @@ such as any state that the controller needs to grab when rendering the UI.
 #include <event.h>
 #include <neureset-device.h>
 #include <eeg-headset.h>
+#include <vector>
 
 class Model: public QObject
 {
@@ -23,6 +24,8 @@ public:
     ~Model();
 
     void stateChanged();
+
+    void addToEventQueue(Event* event);
 
     NeuresetDevice* getNeuresetDevice();
     EEGHeadset* getEEGHeadset();
@@ -37,7 +40,7 @@ private:
     NeuresetDevice* neuresetDevice;
     EEGHeadset* eegHeadset;
 
-    QList<Event*> events;
+    std::vector<Event*> eventQueue;
     // EventQueue* eventQueue;  <--- Do we really need an eventsQueue class? Otherwise just list is simpler
 
     QTimer* handleEventsTimer; // Timer for events handling

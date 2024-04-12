@@ -2,6 +2,7 @@
 #include <vector>
 #include <QDebug>
 #include <model.h>
+#include "event.h"
 
 NeuresetDevice::NeuresetDevice(Model* model, EEGHeadset* headset)
     : model(model), headset(headset), batteryLevel(100), connected(true)
@@ -16,6 +17,9 @@ void NeuresetDevice::startSession() {
     sessionStatus = SessionStatus::InProgress; 
     currentScreen = Screen::InSession;
     session = new Session();
+
+    // Create event
+
     //std::vector<double> baseline = session->calculateBaselineAvg(headset);
   //session->applyTreatment(headset);
     model->stateChanged();
