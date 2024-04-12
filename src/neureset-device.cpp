@@ -19,6 +19,9 @@ void NeuresetDevice::startSession() {
     session = new Session();
 
     // Create event
+    Event* event = new Event(EventType::CalculateBaselineAverages, 5000);
+    // Add to queue
+    model->addToEventQueue(event);
 
     //std::vector<double> baseline = session->calculateBaselineAvg(headset);
   //session->applyTreatment(headset);
