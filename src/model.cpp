@@ -10,6 +10,8 @@ Model::Model(int numSites)
     : handleEventsTimer(new QTimer(this))
 {
 
+    timeElapsed.start();
+
     eegHeadset = new EEGHeadset(this, numSites);
     neuresetDevice = new NeuresetDevice(this, eegHeadset);
 
@@ -26,10 +28,33 @@ Model::~Model()
 
 void Model::handleEvents()
 {
-    qDebug("Handling events.");
+    int time = timeElapsed.elapsed();
+
+    // Get events ready to handle
+    // helper func
+    // Handle those events
+
+
+//    qDebug("Handling events.");
+//    vector<Event> returnEvents;
+//    // Uses predicate to filter events matching the current time
+//    auto it = remove_if(
+//                      eventQueue.begin(),
+//                      eventQueue.end(),
+//                      [&returnEvents, time](const Event& event) {
+//                        bool isTargetTime = (event.getTime() == time);
+//                        if (isTargetTime) {
+//                          returnEvents.push_back(event);
+//                        }
+//                        return isTargetTime;
+//                      });
+//    // The returned iterator contains the elements to remove, and can be passed directly to `.erase()`
+//    eventQueue.erase(it, eventQueue.end());
+//    return returnEvents;
 }
 
-void Model::addToEventQueue(Event *event) {
+
+void Model::addToEventQueue(Event* event) {
     eventQueue.push_back(event);
 }
 

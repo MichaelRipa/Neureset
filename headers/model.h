@@ -14,6 +14,7 @@ such as any state that the controller needs to grab when rendering the UI.
 #include <neureset-device.h>
 #include <eeg-headset.h>
 #include <vector>
+#include <QElapsedTimer>
 
 class Model: public QObject
 {
@@ -36,6 +37,8 @@ signals:
 
 private:
     static int handleEventsFrequency; // How often to handle events in queue, in ms
+
+    QElapsedTimer timeElapsed;
 
     NeuresetDevice* neuresetDevice;
     EEGHeadset* eegHeadset;

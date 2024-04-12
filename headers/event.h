@@ -14,7 +14,7 @@ class Event {
 
   private:
     EventType type;
-    int timeOffset;
+    int time;
 };
 
 #endif 
