@@ -936,7 +936,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="deviceOffPage"/>
      <widget class="QWidget" name="mainMenuPage">
@@ -6300,7 +6300,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QPushButton" name="saveChangesButton">
+           <widget class="QPushButton" name="saveDateAndTimeChangesButton">
             <property name="minimumSize">
              <size>
               <width>0</width>
