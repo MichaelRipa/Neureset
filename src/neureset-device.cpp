@@ -4,32 +4,37 @@
 #include <model.h>
 #include "event.h"
 
-NeuresetDevice::NeuresetDevice(Model* model, EEGHeadset* headset)
-    : model(model), headset(headset), batteryLevel(100), connected(true)
+NeuresetDevice::NeuresetDevice()
+    : deviceOn(true), batteryLevel(100),
+      currentScreen(Screen::MainMenu), currentLight(Light::Red)
 {}
 
 NeuresetDevice::~NeuresetDevice() {}
 
 void NeuresetDevice::startSession() {
-  // Implementation for starting a session
-  bool connected = headset->isConnected();
-  if (connected) {
-    sessionStatus = SessionStatus::InProgress; 
-    currentScreen = Screen::InSession;
-    session = new Session();
+    // Implementation for starting a session
+    if (isConnected()) {
 
-    // Create event
-    Event* event = new Event(EventType::CalculateBaselineAverages, 5000);
-    // Add to queue
-    model->addToEventQueue(event);
+        currentSessionStatus = SessionStatus::InProgress;
+        currentScreen = Screen::InSession;
+        currentSession = new Session(eegHeadset->getNumSites());
 
-    //std::vector<double> baseline = session->calculateBaselineAvg(headset);
-  //session->applyTreatment(headset);
-    model->stateChanged();
+
+        // Add event to event queue
+        Model::Instance()->addToEventQueue(Event::EventType::CalculateBaselineAverages, 5000);
+
+        //std::vector<double> baseline = session->calculateBaselineAvg(headset);
+      //session->applyTreatment(headset);
+        Model::Instance()->stateChanged();
   }
   else {
     qDebug("The headset isn't connected");
   }
+}
+
+void NeuresetDevice::pauseSession()
+{
+
 }
 
 void NeuresetDevice::userPauseSession() {
@@ -45,14 +50,39 @@ void NeuresetDevice::endSession() {
     // Implementation for ending a session
 }
 
-void NeuresetDevice::checkBattery() {
-    // Implementation for checking battery level
+void NeuresetDevice::calculateBaselineAverages()
+{
+    qDebug("Baseline averages totally calculated.");
 }
 
-void NeuresetDevice::checkConnection() {
-    // Implementation for checking connection status
+void NeuresetDevice::setEEGHeadset(EEGHeadset *eegHeadset)
+{
+    this->eegHeadset = eegHeadset;
 }
 
-SessionStatus NeuresetDevice::getSessionStatus() {
-  return sessionStatus;
+// TODO - finish implementing
+void NeuresetDevice::connectionStatusChanged()
+{
+    if (!isConnected())
+        currentLight = Light::Red;
+    else
+        currentLight = Light::Blue;
+
+
 }
+
+Session* NeuresetDevice::getCurrentSession() { return currentSession; }
+
+int NeuresetDevice::getBatteryLevel() { return batteryLevel; }
+
+NeuresetDevice::Light NeuresetDevice::getCurrentLight() { return currentLight; }
+
+NeuresetDevice::SessionStatus NeuresetDevice::getCurrentSessionStatus() {return currentSessionStatus; }
+
+NeuresetDevice::Screen NeuresetDevice::getCurrentScreen() { return currentScreen; }
+
+bool NeuresetDevice::isConnected() { return eegHeadset->isConnected(); }
+
+bool NeuresetDevice::isOn() { return deviceOn; }
+
+

@@ -2,6 +2,8 @@
 model.h:
 Serves as the model in the MVC paradigm and contains all of the program's business logic,
 such as any state that the controller needs to grab when rendering the UI.
+The model also follows the singleton design pattern as only one should ever be instantiated
+and it allows for easy access from the model's components.
 */
 
 #ifndef MODEL_H
@@ -15,18 +17,20 @@ such as any state that the controller needs to grab when rendering the UI.
 #include <eeg-headset.h>
 #include <vector>
 #include <QElapsedTimer>
+#include <globals.h>
+
 
 class Model: public QObject
 {
 Q_OBJECT
 
 public:
-    Model(int numSites);
-    ~Model();
+    static Model* Instance();
+
+    void addToEventQueue(Event::EventType eventType, int time);
 
     void stateChanged();
 
-    void addToEventQueue(Event* event);
 
     NeuresetDevice* getNeuresetDevice();
     EEGHeadset* getEEGHeadset();
@@ -36,21 +40,30 @@ signals:
 
 
 private:
+    Model();
+    ~Model();
+
+    static Model* _instance;
+
     static int handleEventsFrequency; // How often to handle events in queue, in ms
 
-    QElapsedTimer timeElapsed;
+
+    void handleReadyEvents(); // Gets events ready to handle
+    void handleSingleEvent(Event* event);
+
+
+    QElapsedTimer elapsedTimer; // Keeps track of time since program start
 
     NeuresetDevice* neuresetDevice;
     EEGHeadset* eegHeadset;
 
     std::vector<Event*> eventQueue;
-    // EventQueue* eventQueue;  <--- Do we really need an eventsQueue class? Otherwise just list is simpler
 
-    QTimer* handleEventsTimer; // Timer for events handling
+    QTimer* eventLoopTimer; // Timer for events handling
 
 private slots:
     // Events handler. called every handleEventsFrequency using Qt slots timer callback
-    void handleEvents();
+    void eventLoop();
 };
 
 #endif // MODEL_H

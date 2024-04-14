@@ -3,10 +3,12 @@
 #include <variant>
 #include <memory>
 #include <any>
-#include "globals.h"
+
 
 class Event {
   public:
+    enum class EventType { CalculateBaselineAverages };
+
     Event(EventType type, int time);
 
     EventType getType();

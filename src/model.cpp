@@ -3,22 +3,40 @@
 #include "model.h"
 
 
+Model* Model::_instance = 0;
+
+Model* Model::Instance()
+{
+    if (_instance == 0) {
+        _instance = new Model();
+    }
+    return _instance;
+}
+
+void Model::addToEventQueue(Event::EventType eventType, int time)
+{
+    Event* event = new Event(eventType, elapsedTimer.elapsed() + time);
+    eventQueue.push_back(event);
+}
+
 int Model::handleEventsFrequency = 100;
 
-
-Model::Model(int numSites)
-    : handleEventsTimer(new QTimer(this))
+Model::Model()
+    : eventLoopTimer(new QTimer(this))
 {
 
-    timeElapsed.start();
+    elapsedTimer.start();
 
-    eegHeadset = new EEGHeadset(this, numSites);
-    neuresetDevice = new NeuresetDevice(this, eegHeadset);
+    neuresetDevice = new NeuresetDevice();
+    eegHeadset = new EEGHeadset(NUM_SITES);
+
+    neuresetDevice->setEEGHeadset(eegHeadset);
+    eegHeadset->setNeuresetDevice(neuresetDevice);
 
     // Set up callback connections
-    connect(handleEventsTimer, SIGNAL(timeout()), this, SLOT(handleEvents()));
+    connect(eventLoopTimer, SIGNAL(timeout()), this, SLOT(eventLoop()));
 
-    handleEventsTimer->start(handleEventsFrequency);
+    eventLoopTimer->start(handleEventsFrequency);
 }
 
 
@@ -26,11 +44,16 @@ Model::~Model()
 {
 }
 
-void Model::handleEvents()
+void Model::eventLoop()
 {
-    int time = timeElapsed.elapsed();
+    int time = elapsedTimer.elapsed();
+
+    // TODO - check latest events, see if they must modify / cancel any previous event
+
+    handleReadyEvents();
 
     // Get events ready to handle
+
     // helper func
     // Handle those events
 
@@ -54,9 +77,31 @@ void Model::handleEvents()
 }
 
 
-void Model::addToEventQueue(Event* event) {
-    eventQueue.push_back(event);
+void Model::handleReadyEvents() {
+    int time = elapsedTimer.elapsed();
+
+    std::vector<Event*> readyEvents;
+
+    for (int i = eventQueue.size() - 1; i >= 0; --i) {
+        if (eventQueue[i]->getTime() < time) {
+            readyEvents.push_back(eventQueue[i]);
+            eventQueue.pop_back();
+        }
+    }
+
+    for (int i = readyEvents.size() - 1; i >= 0; --i)
+        handleSingleEvent(readyEvents[i]);
 }
+
+// All individual event handling can go here
+void Model::handleSingleEvent(Event *event)
+{
+    if (event->getType() == Event::EventType::CalculateBaselineAverages) {
+        neuresetDevice->calculateBaselineAverages();
+    }
+
+}
+
 
 // Called by anywhere in business logic whenever any model state changes. The UI
 // picks this up and rerenders.

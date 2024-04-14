@@ -6,7 +6,7 @@ Event::Event(EventType type, int time)
 {}
 
 
-EventType Event::getType() {
+Event::EventType Event::getType() {
   return type;
 }
 

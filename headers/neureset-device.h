@@ -3,26 +3,51 @@
 #include "eeg-headset.h"
 #include "globals.h"
 
-class Model; // Forward reference
-
 class NeuresetDevice {
 public:
-    NeuresetDevice(Model* model, EEGHeadset* headset);
+    // Enums
+    enum class SessionStatus { NotStarted, InProgress, Paused, Completed };
+    enum class Light { Red, Green, Blue, Off };
+    // enum class Device { On, Off};
+    enum class Battery { Dead, Alive, Charging};
+    enum Screen {Off, MainMenu, InSession, SessionErased, SessionCompleted, SessionLogs, DateAndTime};
+
+    NeuresetDevice();
     ~NeuresetDevice();
-    SessionStatus getSessionStatus();
+
     void startSession();
+    void pauseSession();
     void userPauseSession();
     void connectionLossPauseSession();
     void endSession();
-    void checkBattery();
-    void checkConnection();
+
+    void calculateBaselineAverages();
+
+    void setEEGHeadset(EEGHeadset* eegHeadset);
+
+    void connectionStatusChanged();
+
+    Session* getCurrentSession();
+    int getBatteryLevel();
+    Light getCurrentLight();
+    SessionStatus getCurrentSessionStatus();
+    Screen getCurrentScreen();
+    bool isConnected();
+    bool isOn();
+
+
+
     
 private:
-    Model* model;
-    Session* session;
-    EEGHeadset* headset;
+    EEGHeadset* eegHeadset;
+    Session* currentSession;
+
+    bool deviceOn;
     int batteryLevel;
-    bool connected;
-    SessionStatus sessionStatus;
+    //bool connected; <-- For now, connected iff eeg headset connected
+    Light currentLight;
+    SessionStatus currentSessionStatus;
     Screen currentScreen;
+
+
 };

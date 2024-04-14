@@ -11,6 +11,7 @@ to update itself, and rerenders.
 
 #include <QMainWindow>
 #include "model.h"
+#include <QGraphicsEffect>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,11 +29,23 @@ private:
     Ui::MainWindow *ui;
     Model* model;
 
+    // Opacity effects for turned off neureset LEDs
+    // Note: cannot be shared so 3 instances required
+    float opacity = 0.25;
+    QGraphicsOpacityEffect* opacityEffectContactLED;
+    QGraphicsOpacityEffect* opacityEffectContactLostLED;
+    QGraphicsOpacityEffect* opacityEffectTreatmentSignalLED;
+
+
+
 private slots:
 
     void helloWorld();
-
+    void init_render(); // Handles any render specific initialization
     void render();
+    void renderNeuresetDevice();
+    void renderAdminPanel();
+    void renderPC();
 
     // --- Neureset device ---
     void handleStartSessionButtonPressed();
