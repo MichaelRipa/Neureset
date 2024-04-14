@@ -2,6 +2,7 @@
 #include "session.h"
 #include "eeg-headset.h"
 #include "globals.h"
+#include <QDateTime>
 
 class NeuresetDevice {
 public:
@@ -34,9 +35,8 @@ public:
     Screen getCurrentScreen();
     bool isConnected();
     bool isOn();
-
-
-
+    QDateTime getCurrentDateTime();
+    void setCurrentDateTime(QDateTime dt);
     
 private:
     EEGHeadset* eegHeadset;
@@ -48,6 +48,5 @@ private:
     Light currentLight;
     SessionStatus currentSessionStatus;
     Screen currentScreen;
-
-
+    QDateTime currentDateTime;
 };

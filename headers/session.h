@@ -10,14 +10,14 @@ treatment for a particular session.
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>
-
+#include <QDateTime>
 
 class Session: public QObject
 {
 Q_OBJECT
 
 public:
-    Session(int numSites);
+    Session(int numSites, QDateTime startTime);
     ~Session();
 
     void calculateBaseline();
@@ -33,8 +33,8 @@ private:
 
     int ID;
     int numSites;
-    double startTime;
-    double endTime;
+    QDateTime startTime;
+    double endTime; // TODO: This likely will change
     QElapsedTimer elapsedTimer;  // Session keeps track of time elapsed on its own
 
     QTimer* notifyModelTimer;  // Timer used to recurrently tell neureset device the state has been updated

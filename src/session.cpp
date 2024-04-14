@@ -5,8 +5,8 @@
 int Session::nextID = 0;
 
 
-Session::Session(int numSites)
-    : ID(nextID), numSites(numSites), startTime(0.0), endTime(0.0),
+Session::Session(int numSites, QDateTime startTime)
+    : ID(nextID), numSites(numSites), startTime(startTime), endTime(0.0),
       notifyModelTimer(new QTimer(this))
 
 {

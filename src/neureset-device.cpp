@@ -6,7 +6,7 @@
 
 NeuresetDevice::NeuresetDevice()
     : deviceOn(true), batteryLevel(100),
-      currentScreen(Screen::MainMenu), currentLight(Light::Red)
+      currentScreen(Screen::MainMenu), currentLight(Light::Red), currentDateTime(QDate(1970, 1, 1), QTime(0,0,0))
 {}
 
 NeuresetDevice::~NeuresetDevice() {}
@@ -17,7 +17,7 @@ void NeuresetDevice::startSession() {
 
         currentSessionStatus = SessionStatus::InProgress;
         currentScreen = Screen::InSession;
-        currentSession = new Session(eegHeadset->getNumSites());
+        currentSession = new Session(eegHeadset->getNumSites(), currentDateTime);
 
 
         // Add event to event queue
@@ -106,4 +106,6 @@ bool NeuresetDevice::isConnected() { return eegHeadset->isConnected(); }
 
 bool NeuresetDevice::isOn() { return deviceOn; }
 
+QDateTime NeuresetDevice::getCurrentDateTime() { return currentDateTime; }
 
+void NeuresetDevice::setCurrentDateTime(QDateTime dt) { currentDateTime = dt; }
