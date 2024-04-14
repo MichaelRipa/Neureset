@@ -32,18 +32,33 @@ void NeuresetDevice::startSession() {
   }
 }
 
+// TODO: Finish
 void NeuresetDevice::pauseSession()
 {
-
+  currentSessionStatus = SessionStatus::Paused;
+  // Ensure there is no need for a Screen state update (I assume not as same screen as InSession?)
+  Model::Instance()->stateChanged();
+  // Does `stateChanged()` suffice for ensuring that the timer begins?
+  // How does this function differ during the baselineAvg computation and when applying treatment? (Ignore if done in parent functions)
+  qDebug("Unfinished implementation");
 }
 
+// TODO: Finish
 void NeuresetDevice::userPauseSession() {
   // Implementation for pausing a session when user specifies
-  
+
+  // Some specific actions. 
+  pauseSession();  
+  qDebug("Unfinished implementation");
 }
 
+// TODO: Finish
 void NeuresetDevice::connectionLossPauseSession() {
   // Implementation for pausing a session when headset disconnected
+  currentLight = Light::Red; // Light flashes red until connection reestablished
+  // Some specific actions
+  pauseSession();  
+  qDebug("Unfinished implementation");
 }
 
 void NeuresetDevice::stopSession() {
@@ -51,7 +66,7 @@ void NeuresetDevice::stopSession() {
   delete currentSession;
   currentSessionStatus = SessionStatus::NotStarted;
   currentScreen = Screen::SessionErased;
-  currentLight = Light::Off;
+  currentLight = Light::Off; // TODO: Call this->connectionStatusChanged() once implementation finished
 
   Model::Instance()->stateChanged();
 }
