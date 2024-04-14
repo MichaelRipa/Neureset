@@ -47,7 +47,13 @@ void NeuresetDevice::connectionLossPauseSession() {
 }
 
 void NeuresetDevice::stopSession() {
-    // Implementation for stoping a session
+  // Implementation for stopping a session
+  delete currentSession;
+  currentSessionStatus = SessionStatus::NotStarted;
+  currentScreen = Screen::SessionErased;
+  currentLight = Light::Off;
+
+  Model::Instance()->stateChanged();
 }
 
 void NeuresetDevice::calculateBaselineAverages()
