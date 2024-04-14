@@ -46,8 +46,8 @@ void NeuresetDevice::connectionLossPauseSession() {
   // Implementation for pausing a session when headset disconnected
 }
 
-void NeuresetDevice::endSession() {
-    // Implementation for ending a session
+void NeuresetDevice::stopSession() {
+    // Implementation for stoping a session
 }
 
 void NeuresetDevice::calculateBaselineAverages()

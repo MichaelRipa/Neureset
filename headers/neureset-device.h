@@ -19,7 +19,7 @@ public:
     void pauseSession();
     void userPauseSession();
     void connectionLossPauseSession();
-    void endSession();
+    void stopSession();
 
     void calculateBaselineAverages();
 
