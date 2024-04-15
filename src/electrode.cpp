@@ -4,8 +4,20 @@ Electrode::Electrode(int numBands) : numBands(numBands) {}
 
 Electrode::~Electrode() {}
 
+// Initialization of the static map
+const std::map<Electrode::Band, std::pair<float, float>> Electrode::frequencyRanges = {
+    {Band::Gamma, {30.0, 100.0}},
+    {Band::Beta, {12.0, 30.0}},
+    {Band::Alpha, {8.0, 12.0}},
+    {Band::Theta, {4.0, 8.0}}
+};
+
 void Electrode::initializeElectrode() {
-  // Initializes wave with all the band parameters
+    int index = 0;
+    for (auto& band : frequencyRanges) {
+        // Initialize each wave with the frequency and amplitude range
+        waves[index++] = Wave(band.second.first, band.second.second, 0.5, 3.0);
+    }
 }
 
 void Electrode::computeBaselineFrequencies() {
