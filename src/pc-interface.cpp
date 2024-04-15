@@ -13,9 +13,6 @@ void PCInterface::uploadData(std::vector<Session*> sessions) {
     pc->uploadData(sessions);
 }
 
-void PCInterface::displaySessionLogs() const {
-    // Implementation for displaying session logs
-   // for (const auto& session : sessionLogs) {
-        // Display session details
-   // }
+std::vector<SessionLog> PCInterface::loadAllSessionLogs() {
+  return pc->loadSessionLogs();
 }

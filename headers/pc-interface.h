@@ -9,13 +9,14 @@ inheriting QObject and will unfortunately break everything.
 #include <vector>
 #include "session.h"
 #include "pc.h"
+#include "session-log.h"
 
 class PCInterface {
 public:
     PCInterface();
     ~PCInterface();
     void uploadData(std::vector<Session*> sessions);
-    void displaySessionLogs() const;
+    std::vector<SessionLog> loadAllSessionLogs();
 private:
     std::vector<Session*> sessionLogs;
     PC* pc;
