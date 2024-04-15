@@ -21,7 +21,10 @@ void Wave::calculateDominantFrequency() {
 }
 
 void Wave::applyFrequencyOffset(float offset) {
- // Adds offset to frequency of each component
+  // Adds offset to frequency of each component
+  for (int i = 0; i < 3; ++i) {
+    frequencies[i] += offset;
+  }
 }
 
 std::vector<float> Wave::getCurrentWaveform(int numPoints) const {
