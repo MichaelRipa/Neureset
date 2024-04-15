@@ -1,5 +1,7 @@
 #include "wave.h"
 #include <random>
+#include <cmath>
+#include <stdexcept>
 
 Wave::Wave(float minFreq, float maxFreq, float minAmp, float maxAmp) : minFreq(minFreq), maxFreq(maxFreq), minAmp(minAmp), maxAmp(maxAmp) {}
 
@@ -18,6 +20,22 @@ void Wave::initializeWaveform() {
 
 void Wave::calculateDominantFrequency() {
   // Returns the dominant frequency w.r.t simplified formula
+  if (frequencies.size() != amplitudes.size()) {
+    throw std::runtime_error("Frequencies and amplitudes vectors must be of the same size.");
+  }
+
+  float numerator = 0.0;
+  float denominator = 0.0;
+
+  for (size_t i = 0; i < frequencies.size(); ++i) {
+    numerator += frequencies[i] * std::pow(amplitudes[i], 2);
+    denominator += std::pow(amplitudes[i], 2);
+  }
+
+  if (denominator == 0) {
+    std::runtime_error("Sum of the squares of amplitudes is zero, cannot divide by zero.");
+  } 
+  dominantFrequency = numerator / denominator; 
 }
 
 void Wave::applyFrequencyOffset(float offset) {
