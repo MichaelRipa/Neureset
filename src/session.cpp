@@ -93,3 +93,18 @@ void Session::updateElapsedTime()
     }
 }
 
+int Session::getNumSites() {
+  return numSites;
+}
+
+QDateTime Session::getStartTime() {
+  return startTime;
+}
+
+std::vector<float> Session::getBaselineFrequenciesBefore() {
+  return baselineFrequenciesBefore;
+}
+
+std::vector<float> Session::getBaselineFrequenciesAfter() {
+  return baselineFrequenciesAfter;
+}

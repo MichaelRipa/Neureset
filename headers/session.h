@@ -36,7 +36,10 @@ public:
     bool isRunning();
     int getElapsedTime();
     float getProgress();
-
+    int getNumSites();
+    QDateTime getStartTime();
+    std::vector<float> getBaselineFrequenciesBefore();
+    std::vector<float> getBaselineFrequenciesAfter();
 
 private:
     static int nextID;
