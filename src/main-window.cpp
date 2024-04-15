@@ -106,6 +106,16 @@ void MainWindow::renderNeuresetDevice()
         ui->startSessionButton->setEnabled(neuresetDevice->isConnected());
     }
     else if (neuresetDevice->getCurrentScreen() == NeuresetDevice::Screen::InSession) {
+        // Session time elapsed
+        qDebug("%d",neuresetDevice->getCurrentSession()->getElapsedTime());
+        int timeInMS = neuresetDevice->getCurrentSession()->getElapsedTime();
+        int timeInSEC = timeInMS / 1000;
+        ui->sessionTimeLabel->setText(QString("%0").arg(timeInSEC));
+
+
+        // Progress bar
+
+        // Buttons not clickable
 
 
     }

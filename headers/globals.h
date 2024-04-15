@@ -2,6 +2,8 @@
 
 extern const int TICKS_PER_SECOND;
 extern const int NUM_SITES;
+extern const int TIME_TO_COMPUTE_BASELINE_FREQUENCIES;
+
 //enum class SessionStatus { NotStarted, InProgress, Paused, Completed };
 //enum class Light { Red, Green, Blue, Off };
 //enum class Device { On, Off};

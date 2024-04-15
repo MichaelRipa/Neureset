@@ -7,7 +7,8 @@ int Session::nextID = 0;
 
 Session::Session(int numSites, QDateTime startTime)
     : ID(nextID), numSites(numSites), startTime(startTime), endTime(0.0),
-      notifyModelTimer(new QTimer(this))
+       elapsedTime(0), running(true), updateElapsedTimeTimer(new QTimer(this)),
+       timeBeforeLastStart(0)
 
 {
 
@@ -19,15 +20,13 @@ Session::Session(int numSites, QDateTime startTime)
         baselineFrequenciesAfter.push_back(-1);
     }
 
-    elapsedTimer.start();
-
-    notifyModelTimer->start();
+    updateElapsedTimeTimer->start();
+    timeSinceLastStart.start();
 
     // Set up callback connections
-    connect(notifyModelTimer, SIGNAL(timeout()), this, SLOT(notifyModel()));
+    connect(updateElapsedTimeTimer, SIGNAL(timeout()), this, SLOT(updateElapsedTime()));
 
 }
-
 
 Session::~Session()
 {}
@@ -44,18 +43,37 @@ void Session::saveSessionData() {
     // Implementation for saving session data
 }
 
+void Session::setRunning(bool running)
+{
+    this->running = running;
+    timeBeforeLastStart = elapsedTime;
+    if (running) {
+        timeSinceLastStart.restart();
+    }
+}
+
+bool Session::isRunning()
+{
+    return running;
+}
+
+
 float Session::getProgress()
 {
     return 0;
 }
 
-int Session::getElaspedTime()
+int Session::getElapsedTime()
 {
-    return elapsedTimer.elapsed();
+    return elapsedTime;
 }
 
-void Session::notifyModel()
+void Session::updateElapsedTime()
 {
-    Model::Instance()->modelChanged();
+    if (running) {
+        qDebug("Session running.");
+        elapsedTime = timeBeforeLastStart + timeSinceLastStart.elapsed();
+        Model::Instance()->modelChanged();
+    }
 }
 

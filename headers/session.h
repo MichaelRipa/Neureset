@@ -24,7 +24,10 @@ public:
     void applyTreatment();
     void saveSessionData();
 
-    int getElaspedTime();
+    void setRunning(bool running);
+
+    bool isRunning();
+    int getElapsedTime();
     float getProgress();
 
 
@@ -34,18 +37,25 @@ private:
     int ID;
     int numSites;
     QDateTime startTime;
+    int elapsedTime;
     double endTime; // TODO: This likely will change
-    QElapsedTimer elapsedTimer;  // Session keeps track of time elapsed on its own
 
-    QTimer* notifyModelTimer;  // Timer used to recurrently tell neureset device the state has been updated
-    int notifyModelFreq = 1000; // in ms
+    QTimer* updateElapsedTimeTimer;  // Timer used to recurrently update session time
+    int updateTimeFreq = 1000; // in ms
+
+    // Keeps track of the time since the session was last started
+    // (either for first time or since paused / disconnected).
+    // Cannot be stopped, only restarted, hence need for elapsedTime int
+    QElapsedTimer timeSinceLastStart;
+    int timeBeforeLastStart;
 
     int nextSiteToTreat;
+    bool running;  // True iff treatment currently being applied
 
     // before and after dominant frequenices for each site
     std::vector<float> baselineFrequenciesBefore;
     std::vector<float> baselineFrequenciesAfter;
 
 private slots:
-    void notifyModel();
+    void updateElapsedTime();
 };

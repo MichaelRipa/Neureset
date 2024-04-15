@@ -4,6 +4,7 @@
 #include <model.h>
 #include "event.h"
 
+
 NeuresetDevice::NeuresetDevice()
     : deviceOn(true), batteryLevel(100),
       currentScreen(Screen::MainMenu), currentLight(Light::Red), currentDateTime(QDate(1970, 1, 1), QTime(0,0,0))
@@ -19,9 +20,8 @@ void NeuresetDevice::startSession() {
         currentScreen = Screen::InSession;
         currentSession = new Session(eegHeadset->getNumSites(), currentDateTime);
 
-
         // Add event to event queue
-        Model::Instance()->addToEventQueue(Event::EventType::CalculateBaselineAverages, 5000);
+        Model::Instance()->addToEventQueue(Event::EventType::CalculateBaselineAverages, TIME_TO_COMPUTE_BASELINE_FREQUENCIES);
 
         //std::vector<double> baseline = session->calculateBaselineAvg(headset);
       //session->applyTreatment(headset);
@@ -36,8 +36,9 @@ void NeuresetDevice::startSession() {
 void NeuresetDevice::pauseSession()
 {
   currentSessionStatus = SessionStatus::Paused;
-  // Ensure there is no need for a Screen state update (I assume not as same screen as InSession?)
+  currentSession->setRunning(false);
   Model::Instance()->stateChanged();
+
   // Does `stateChanged()` suffice for ensuring that the timer begins?
   // How does this function differ during the baselineAvg computation and when applying treatment? (Ignore if done in parent functions)
   qDebug("Unfinished implementation");

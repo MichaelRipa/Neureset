@@ -19,7 +19,7 @@ void Model::addToEventQueue(Event::EventType eventType, int time)
     eventQueue.push_back(event);
 }
 
-int Model::handleEventsFrequency = 100;
+int Model::handleEventsFrequency = 300;
 
 Model::Model()
     : eventLoopTimer(new QTimer(this))
