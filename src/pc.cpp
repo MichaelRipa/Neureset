@@ -1,5 +1,7 @@
 #include "pc.h"
 #include <fstream>
+#include <sstream>
+#include <iostream>
 #include <QString>
 #include <QDateTime>
 #include <sys/stat.h>
@@ -57,6 +59,46 @@ void PC::uploadData(std::vector<Session*> sessions) {
   file.close();
 } 
 
-void PC::displaySessionLogs() {
-    // Implementation for displaying session logs
+std::vector<SessionLog> PC::loadSessionLogs() {
+    std::vector<SessionLog> logs;
+    std::string filename = PC_FILENAME;
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return logs;
+    }
+
+    std::string line;
+    getline(file, line); // Skip the header
+
+    while (getline(file, line)) {
+        std::istringstream ss(line);
+        std::string cell;
+        SessionLog log;
+
+        // Read ID
+        getline(ss, cell, ',');
+        log.id = std::stoi(cell);
+
+        // Read Date and Time
+        getline(ss, cell, ',');
+        log.startTime = QDateTime::fromString(QString::fromStdString(cell), "yyyy-MM-dd.hh:mm");
+
+        // Read before and after frequencies
+        while (getline(ss, cell, ',')) {
+            float frequency = std::stof(cell);
+            log.beforeFrequencies.push_back(frequency); // Assumes even distribution of before and after frequencies
+
+            if (getline(ss, cell, ',')) {
+                frequency = std::stof(cell);
+                log.afterFrequencies.push_back(frequency);
+            }
+        }
+
+        logs.push_back(log);
+    }
+
+    file.close();
+    return logs;
 }

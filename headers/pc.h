@@ -1,6 +1,6 @@
 #pragma once
-#include "pc-interface.h"
 #include "session.h"
+#include "session-log.h"
 #include <vector>
 
 class PC {
@@ -8,9 +8,8 @@ public:
     PC();
     ~PC();
     void uploadData(std::vector<Session*> sessions);
-    void displaySessionLogs();
+    std::vector<SessionLog> loadSessionLogs();
 private:
-    PCInterface pcInterface;
     std::string PC_FILENAME = "session-logs.csv"; // TODO: Add to globals.h
     bool fileExists(std::string filename);
 };
