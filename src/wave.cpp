@@ -1,6 +1,6 @@
 #include "wave.h"
 
-Wave::Wave() {}
+Wave::Wave(float minFreq, float maxFreq, float minAmp, float maxAmp) : minFreq(minFreq), maxFreq(maxFreq), minAmp(minAmp), maxAmp(maxAmp) {}
 
 Wave::~Wave() {}
 
