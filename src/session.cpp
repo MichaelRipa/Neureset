@@ -6,10 +6,9 @@ int Session::nextID = 0;
 
 
 Session::Session(int numSites, QDateTime startTime)
-    : ID(nextID), numSites(numSites), startTime(startTime), endTime(0.0),
-       elapsedTime(0), running(true), updateElapsedTimeTimer(new QTimer(this)),
-       timeBeforeLastStart(0)
-
+    : ID(nextID), currentStage(Stage::computePreTreatmentBaselines), numSites(numSites),
+      startTime(startTime), endTime(0.0), elapsedTime(0), running(true),
+      updateElapsedTimeTimer(new QTimer(this)), timeBeforeLastStart(0)
 {
 
     Session::nextID++;
@@ -31,6 +30,16 @@ Session::Session(int numSites, QDateTime startTime)
 Session::~Session()
 {}
 
+void Session::setStage(Stage stage)
+{
+    currentStage = stage;
+}
+
+Session::Stage Session::getStage()
+{
+    return currentStage;
+}
+
 void Session::calculateBaseline() {
     // Implementation for calculating baseline
 }
@@ -43,13 +52,21 @@ void Session::saveSessionData() {
     // Implementation for saving session data
 }
 
-void Session::setRunning(bool running)
+void Session::startTimer()
 {
-    this->running = running;
+    if (this->running)
+        return;
+
+    this->running = true;
     timeBeforeLastStart = elapsedTime;
-    if (running) {
-        timeSinceLastStart.restart();
-    }
+    timeSinceLastStart.restart();
+}
+
+void Session::pauseTimer()
+{
+    if (!this->running)
+        return;
+    this->running = false;
 }
 
 bool Session::isRunning()
@@ -71,7 +88,6 @@ int Session::getElapsedTime()
 void Session::updateElapsedTime()
 {
     if (running) {
-        qDebug("Session running.");
         elapsedTime = timeBeforeLastStart + timeSinceLastStart.elapsed();
         Model::Instance()->modelChanged();
     }

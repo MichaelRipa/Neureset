@@ -12,7 +12,8 @@ public:
     ~EEGHeadset();
 
     void setNeuresetDevice(NeuresetDevice* neuresetDevice);
-    void setConnected(bool connected);
+    void connect();
+    void disconnect();
 
     int getNumSites();
     bool isConnected() const;

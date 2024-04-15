@@ -7,8 +7,8 @@
 class NeuresetDevice {
 public:
     // Enums
-    enum class SessionStatus { NotStarted, InProgress, Paused, Completed };
-    enum class Light { Red, Green, Blue, Off };
+    enum class SessionStatus { NotStarted, InProgress, UserPausedSession, ConnectionLossPausedSession, UserStoppedSession, Completed };
+    enum class ConnectionStatus { Contact, Treatment, ContactLost, Off };
     // enum class Device { On, Off};
     enum class Battery { Dead, Alive, Charging};
     enum Screen {Off, MainMenu, InSession, SessionErased, SessionCompleted, SessionLogs, DateAndTime};
@@ -17,20 +17,25 @@ public:
     ~NeuresetDevice();
 
     void startSession();
-    void pauseSession();
+    void runCurrentSessionStage();  // Runs the current session step (e.g compute post treatment frequencies)
     void userPauseSession();
+    void userUnpauseSession();
     void connectionLossPauseSession();
+
     void stopSession();
 
     void calculateBaselineAverages();
 
     void setEEGHeadset(EEGHeadset* eegHeadset);
 
-    void connectionStatusChanged();
+    void eegHeadsetConnected();
+    void eegHeadsetDisconnected();
+
+    void updateConnectionStatus();
 
     Session* getCurrentSession();
     int getBatteryLevel();
-    Light getCurrentLight();
+    ConnectionStatus getCurrentConnectionStatus();
     SessionStatus getCurrentSessionStatus();
     Screen getCurrentScreen();
     bool isConnected();
@@ -45,7 +50,7 @@ private:
     bool deviceOn;
     int batteryLevel;
     //bool connected; <-- For now, connected iff eeg headset connected
-    Light currentLight;
+    ConnectionStatus currentConnectionStatus;
     SessionStatus currentSessionStatus;
     Screen currentScreen;
     QDateTime currentDateTime;

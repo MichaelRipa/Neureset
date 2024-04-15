@@ -11,10 +11,22 @@ void EEGHeadset::setNeuresetDevice(NeuresetDevice *neuresetDevice)
     this->neuresetDevice = neuresetDevice;
 }
 
-void EEGHeadset::setConnected(bool connected)
+void EEGHeadset::connect()
 {
-    this->connected = connected;
-    neuresetDevice->connectionStatusChanged();
+    if (connected)
+        return;
+    connected = true;
+    neuresetDevice->eegHeadsetConnected();
+
+}
+
+void EEGHeadset::disconnect()
+{
+    if (!connected)
+        return;
+    connected = false;
+    neuresetDevice->eegHeadsetDisconnected();
+
 }
 
 int EEGHeadset::getNumSites() { return numSites; }

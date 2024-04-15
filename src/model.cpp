@@ -13,12 +13,6 @@ Model* Model::Instance()
     return _instance;
 }
 
-void Model::addToEventQueue(Event::EventType eventType, int time)
-{
-    Event* event = new Event(eventType, elapsedTimer.elapsed() + time);
-    eventQueue.push_back(event);
-}
-
 int Model::handleEventsFrequency = 300;
 
 Model::Model()
@@ -39,43 +33,48 @@ Model::Model()
     eventLoopTimer->start(handleEventsFrequency);
 }
 
-
 Model::~Model()
 {
 }
 
 void Model::eventLoop()
 {
-    int time = elapsedTimer.elapsed();
-
-    // TODO - check latest events, see if they must modify / cancel any previous event
-
     handleReadyEvents();
 
-    // Get events ready to handle
+    // If event queue is empty and neureset device is in session, it is ready to run the current stage
+    // of its session treatment (e.g computing post treatment baseline frequencies)
+    if (eventQueue.size() == 0 && neuresetDevice->getCurrentSessionStatus() == NeuresetDevice::SessionStatus::InProgress) {
+        neuresetDevice->runCurrentSessionStage();
+    }
 
-    // helper func
-    // Handle those events
-
-
-//    qDebug("Handling events.");
-//    vector<Event> returnEvents;
-//    // Uses predicate to filter events matching the current time
-//    auto it = remove_if(
-//                      eventQueue.begin(),
-//                      eventQueue.end(),
-//                      [&returnEvents, time](const Event& event) {
-//                        bool isTargetTime = (event.getTime() == time);
-//                        if (isTargetTime) {
-//                          returnEvents.push_back(event);
-//                        }
-//                        return isTargetTime;
-//                      });
-//    // The returned iterator contains the elements to remove, and can be passed directly to `.erase()`
-//    eventQueue.erase(it, eventQueue.end());
-//    return returnEvents;
 }
 
+
+void Model::addToEventQueue(Event::EventType eventType, int time)
+{
+    Event* event = new Event(eventType, elapsedTimer.elapsed() + time);
+    eventQueue.push_back(event);
+    updateEventQueueBasedOnEvent(event);
+}
+
+
+void Model::updateEventQueueBasedOnEvent(Event *event) {
+    // Only pausing related events cancel out other events when added to the queue.
+    if (!(event->getType() == Event::EventType::UserPausedSession ||
+          event->getType() == Event::EventType::connectionLossPausedSession))
+        return;
+    // Remove in session treatment related events
+    for (int i = eventQueue.size() - 1; i >= 0; --i) {
+        if (eventQueue[i]->getType() == Event::EventType::CalculateBaselineAverages ||
+            eventQueue[i]->getType() == Event::EventType::CalculateFrequencyAtCurrentSite ||
+            eventQueue[i]->getType() == Event::EventType::ApplyTreatmentToCurrentSite)
+        {
+            Event* removedEvent = eventQueue[i];
+            eventQueue.erase(eventQueue.begin() + i);
+            delete removedEvent;
+        }
+    }
+}
 
 void Model::handleReadyEvents() {
     int time = elapsedTimer.elapsed();
@@ -85,7 +84,7 @@ void Model::handleReadyEvents() {
     for (int i = eventQueue.size() - 1; i >= 0; --i) {
         if (eventQueue[i]->getTime() < time) {
             readyEvents.push_back(eventQueue[i]);
-            eventQueue.pop_back();
+            eventQueue.erase(eventQueue.begin() + i);
         }
     }
 
@@ -96,6 +95,7 @@ void Model::handleReadyEvents() {
 // All individual event handling can go here
 void Model::handleSingleEvent(Event *event)
 {
+    qDebug("Handling single event.");
     if (event->getType() == Event::EventType::CalculateBaselineAverages) {
         neuresetDevice->calculateBaselineAverages();
     }

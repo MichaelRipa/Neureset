@@ -43,6 +43,10 @@ private:
     Model();
     ~Model();
 
+    // If current event is a pause or disconnect, remove any current session
+    // treatment events in queue (all assumed non pause/disconnect events assumed to be).
+    void updateEventQueueBasedOnEvent(Event* event);
+
     static Model* _instance;
 
     static int handleEventsFrequency; // How often to handle events in queue, in ms

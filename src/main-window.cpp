@@ -94,11 +94,11 @@ void MainWindow::renderNeuresetDevice()
     ui->contactLostLED->graphicsEffect()->setEnabled(true);
     ui->treatmentSignalLED->graphicsEffect()->setEnabled(true);
 
-    if (neuresetDevice->getCurrentLight() == NeuresetDevice::Light::Blue)
+    if (neuresetDevice->getCurrentConnectionStatus() == NeuresetDevice::ConnectionStatus::Contact)
         ui->contactLED->graphicsEffect()->setEnabled(false);
-    else if (neuresetDevice->getCurrentLight() == NeuresetDevice::Light::Red)
+    else if (neuresetDevice->getCurrentConnectionStatus() == NeuresetDevice::ConnectionStatus::ContactLost)
         ui->contactLostLED->graphicsEffect()->setEnabled(false);
-    else if (neuresetDevice->getCurrentLight() == NeuresetDevice::Light::Green)
+    else if (neuresetDevice->getCurrentConnectionStatus() == NeuresetDevice::ConnectionStatus::Treatment)
         ui->treatmentSignalLED->graphicsEffect()->setEnabled(false);
 
     // Rendering based on current screen (only for screens that need coding logic)
@@ -107,7 +107,7 @@ void MainWindow::renderNeuresetDevice()
     }
     else if (neuresetDevice->getCurrentScreen() == NeuresetDevice::Screen::InSession) {
         // Session time elapsed
-        qDebug("%d",neuresetDevice->getCurrentSession()->getElapsedTime());
+        //qDebug("%d",neuresetDevice->getCurrentSession()->getElapsedTime());
         int timeInMS = neuresetDevice->getCurrentSession()->getElapsedTime();
         int timeInSEC = timeInMS / 1000;
         ui->sessionTimeLabel->setText(QString("%0").arg(timeInSEC));
@@ -164,12 +164,16 @@ void MainWindow::handleTimeAndDateButtonPressed()
 
 void MainWindow::handleInSessionPauseButtonPressed()
 {
+    model->getNeuresetDevice()->userPauseSession();
+    render();
 
 }
 
 void MainWindow::handleInSessionStartButtonPressed()
 {
 
+    model->getNeuresetDevice()->userUnpauseSession();
+    render();
 }
 
 void MainWindow::handleInSessionStopButtonPressed()
@@ -240,13 +244,13 @@ void MainWindow::handleChargeBatteryButtonPressed()
 
 void MainWindow::handleConnectButtonPressed()
 {
-    model->getEEGHeadset()->setConnected(true);
+    model->getEEGHeadset()->connect();
     render();
 }
 
 void MainWindow::handleDisconnectButtonPressed()
 {
-    model->getEEGHeadset()->setConnected(false);
+    model->getEEGHeadset()->disconnect();
     render();
 }
 

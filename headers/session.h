@@ -17,6 +17,9 @@ class Session: public QObject
 Q_OBJECT
 
 public:
+
+    enum class Stage { computePreTreatmentBaselines, ApplyTreatmentToSites, computePostTreatmentBaselines };
+
     Session(int numSites, QDateTime startTime);
     ~Session();
 
@@ -24,7 +27,11 @@ public:
     void applyTreatment();
     void saveSessionData();
 
-    void setRunning(bool running);
+    void startTimer();
+    void pauseTimer();
+
+    void setStage(Stage stage);
+    Stage getStage();
 
     bool isRunning();
     int getElapsedTime();
@@ -36,6 +43,10 @@ private:
 
     int ID;
     int numSites;
+
+    // Keeps track of the current stage of treatment
+    Stage currentStage;
+
     QDateTime startTime;
     int elapsedTime;
     double endTime; // TODO: This likely will change
