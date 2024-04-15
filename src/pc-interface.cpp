@@ -1,12 +1,16 @@
 #include "pc-interface.h"
 
-PCInterface::PCInterface() {}
+PCInterface::PCInterface() {
+  pc = new PC();
+}
 
-PCInterface::~PCInterface() {}
+PCInterface::~PCInterface() {
+  delete pc;
+}
 
-void PCInterface::uploadData(const std::vector<Session*> sessions) {
+void PCInterface::uploadData(std::vector<Session*> sessions) {
     // Implementation for uploading data
-    sessionLogs = sessions;
+    pc->uploadData(sessions);
 }
 
 void PCInterface::displaySessionLogs() const {
