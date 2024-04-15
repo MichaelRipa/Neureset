@@ -47,6 +47,25 @@ void Wave::applyFrequencyOffset(float offset) {
 
 std::vector<float> Wave::getCurrentWaveform(int numPoints) const {
   // Computes a wave to plot with respect to the current frequencies and amplitudes.
+  std::vector<float> waveform(numPoints);
+
+  // TODO: In future implementations, the timeStep should also be based on a timeStart and timeEnd
+  // I.e. supporting returning data for a simulated real-time signal
+  float timeStep = 1.0 / numPoints;  // Adjust timeStep based on the actual time span you wish to cover
+
+  for (int i = 0; i < numPoints; ++i) {
+    float t = i * timeStep;  // Current time point
+    float wavePoint = 0.0;
+
+  // Sum the contributions of each sinusoidal component
+  for (size_t j = 0; j < frequencies.size(); ++j) {
+    wavePoint += amplitudes[j] * std::sin(2 * M_PI * frequencies[j] * t);
+  }
+
+  waveform[i] = wavePoint;
+  }
+
+  return waveform;
 }
 
 float Wave::randomFloat(float min, float max) const {
