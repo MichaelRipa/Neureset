@@ -4,6 +4,9 @@
 #include "ui_main-window.h"
 #include "globals.h"
 #include <QGraphicsOpacityEffect>
+#include <QDebug>
+#include <QDate>
+#include <QTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -212,7 +215,15 @@ void MainWindow::handleSessionLogsUploadAllButtonPressed()
 
 void MainWindow::handleSaveDateAndTimeChangesButtonPressed()
 {
+  // Extract the time and date from the UI elements
+  QTime time = ui->timeEdit->time();
+  QDate date = ui->dateEdit->date();
+  QDateTime dateTime(date, time);
 
+  // Update the devices DateTime.
+  model->getNeuresetDevice()->setCurrentDateTime(dateTime);
+
+  qDebug() << "New DateTime:" << dateTime.toString("yyyy-MM-dd hh:mm:ss");
 }
 
 void MainWindow::handleDateAndTimeBackButtonPressed()
