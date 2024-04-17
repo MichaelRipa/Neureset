@@ -157,3 +157,5 @@ bool NeuresetDevice::isOn() { return deviceOn; }
 QDateTime NeuresetDevice::getCurrentDateTime() { return currentDateTime; }
 
 void NeuresetDevice::setCurrentDateTime(QDateTime dt) { currentDateTime = dt; }
+
+void NeuresetDevice::setCurrentScreen(Screen screen) { currentScreen = screen; }

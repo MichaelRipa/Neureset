@@ -42,6 +42,7 @@ public:
     bool isOn();
     QDateTime getCurrentDateTime();
     void setCurrentDateTime(QDateTime dt);
+    void setCurrentScreen(Screen screen);
     
 private:
     EEGHeadset* eegHeadset;

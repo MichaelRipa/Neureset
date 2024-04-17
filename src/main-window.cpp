@@ -154,12 +154,14 @@ void MainWindow::handleStartSessionButtonPressed()
 
 void MainWindow::handleSessionLogsButtonPressed()
 {
-
+  model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::SessionLogs);
+  render();
 }
 
 void MainWindow::handleTimeAndDateButtonPressed()
 {
-
+  model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::DateAndTime);
+  render();
 }
 
 void MainWindow::handleInSessionPauseButtonPressed()
@@ -171,7 +173,6 @@ void MainWindow::handleInSessionPauseButtonPressed()
 
 void MainWindow::handleInSessionStartButtonPressed()
 {
-
     model->getNeuresetDevice()->userUnpauseSession();
     render();
 }
@@ -184,17 +185,19 @@ void MainWindow::handleInSessionStopButtonPressed()
 
 void MainWindow::handleSessionCompleteBackButtonPressed()
 {
-
+  // TODO: Define the steps which ocuur after a Session is completed
 }
 
 void MainWindow::handleSessionIncompleteBackButtonPressed()
 {
-
+  model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::MainMenu);
+  render();
 }
 
 void MainWindow::handleSessionLogsBackButtonPressed()
 {
-
+  model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::MainMenu);
+  render();
 }
 
 void MainWindow::handleSessionLogsClearAllButtonPressed()
@@ -214,7 +217,8 @@ void MainWindow::handleSaveDateAndTimeChangesButtonPressed()
 
 void MainWindow::handleDateAndTimeBackButtonPressed()
 {
-
+  model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::MainMenu);
+  render();
 }
 
 void MainWindow::handlePowerButtonPressed()
