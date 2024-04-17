@@ -189,6 +189,7 @@ void MainWindow::handleInSessionStopButtonPressed()
 void MainWindow::handleSessionCompleteBackButtonPressed()
 {
   // TODO: Define the steps which ocuur after a Session is completed
+  qDebug() << "TODO: Implement MainWindow::handleSessionCompleteBackButtonPressed()";
 }
 
 void MainWindow::handleSessionIncompleteBackButtonPressed()
@@ -205,12 +206,12 @@ void MainWindow::handleSessionLogsBackButtonPressed()
 
 void MainWindow::handleSessionLogsClearAllButtonPressed()
 {
-
+  qDebug() << "TODO: Implement MainWindow::handleSessionLogsClearAllButtonPressed()";
 }
 
 void MainWindow::handleSessionLogsUploadAllButtonPressed()
 {
-
+  qDebug() << "TODO: Implement MainWindow::handleSessionLogsUploadAllButtonPressed()";
 }
 
 void MainWindow::handleSaveDateAndTimeChangesButtonPressed()
@@ -234,27 +235,32 @@ void MainWindow::handleDateAndTimeBackButtonPressed()
 
 void MainWindow::handlePowerButtonPressed()
 {
-
+  // TODO: Check if screen on/off, if on set to off (and vice versa)
+  // TODO: There might be other things to check for (e.g. if a session is running, if so stop it etc.)
+  // TODO: Also, the battery shouldn't be draining when the device is off and the light should be off 
+  qDebug() << "TODO: Implement MainWindow::handlePowerButtonPressed()";
 }
 
 void MainWindow::handleComputerSessionSelectedChanged()
 {
-
+  qDebug() << "TODO: Implement MainWindow::handleComputerSessionSelectedChanged()";
 }
 
 void MainWindow::handleComputerSiteSelectedChanged()
 {
+  // TODO: I don't think there is anything keeping track of the selected site yet.
+  qDebug() << "TODO: Implement MainWindow::handleComputerSiteSelectedChanged()";
 
 }
 
 void MainWindow::handleApplyBandRangeToAllSitesButtonPressed()
 {
-
+  qDebug() << "TODO: Implement MainWindow::handleApplyBandRangeToAllSitesButtonPressed()";
 }
 
 void MainWindow::handleChargeBatteryButtonPressed()
 {
-
+  qDebug() << "TODO: Implement MainWindow::handleChargeBatteryButtonPressed()";
 }
 
 void MainWindow::handleConnectButtonPressed()
@@ -271,11 +277,12 @@ void MainWindow::handleDisconnectButtonPressed()
 
 void MainWindow::handleWaveSettingsBandRangeSelectedChanged()
 {
-
+  qDebug() << "TODO: Implement MainWindow::handleWaveSettingsBandRangeSelectedChanged()";
 }
 
 void MainWindow::handleWaveSettingsSiteSelectedChanged()
 {
+  qDebug() << "TODO: Implement MainWindow::handleWaveSettingsSiteSelectedChanged()";
 
 }
 
