@@ -1,6 +1,7 @@
 #ifndef WAVE_H
 #define WAVE_H
 
+#include "globals.h"
 #include <vector>
 #include <cmath>
 
@@ -19,7 +20,9 @@ public:
     void applyFrequencyOffset(float offset);
 
     // Returns the current waveform data points for plotting
-    std::vector<float> getCurrentWaveform(int numPoints) const;
+    std::vector<float> getCurrentWaveform() const;
+    // Returns what would be the domain of the waveform (for plotting)
+    std::vector<float> getTimeSteps() const;
 
 private:
     float minFreq, maxFreq; // Minimum and maximum frequencies for the band

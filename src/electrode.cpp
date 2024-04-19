@@ -5,7 +5,7 @@ Electrode::Electrode(int numBands) : numBands(numBands) {}
 Electrode::~Electrode() {}
 
 // Initialization of the static map
-const std::map<Electrode::Band, std::pair<float, float>> Electrode::frequencyRanges = {
+const std::map<Band, std::pair<float, float>> Electrode::frequencyRanges = {
     {Band::Gamma, {30.0, 100.0}},
     {Band::Beta, {12.0, 30.0}},
     {Band::Alpha, {8.0, 12.0}},
@@ -35,11 +35,33 @@ void Electrode::applyTreatmentToWaves(float offset) {
   }
 }
 
-std::vector<std::vector<float>> Electrode::collectWaveData(int numPointsPerWave) const {
+std::vector<std::vector<float>> Electrode::collectWaveData(Band band) const {
   // Collects data from all waves for the current time point for plotting or analysis
-  std::vector<std::vector<float>> waveData(waves.size());
-  for (size_t i = 0; i < waves.size(); ++i) {
-    waveData[i] = waves[i].getCurrentWaveform(numPointsPerWave);
+  std::vector<float> waveDomain = waves[0].getTimeSteps();
+  std::vector<float> waveRange(waveDomain.size());
+  int b = static_cast<int>(band);
+
+  if (band == Band::All) {
+    // Combines all the bands together into one waveform
+    for (size_t i = 0; i < waves.size(); ++i) {
+      std::vector<float> currWave = waves[i].getCurrentWaveform();
+      for (size_t j = 0; j < currWave.size(); ++j) {
+        waveRange[j] += currWave[j];
+      }
+    }
+  }
+
+  else {
+    // Returns a wave cooresponding to a particular band range
+    waveRange = waves[b].getCurrentWaveform();
+  }
+
+  // Transforms the data into (t,y) coordinates for plotting
+  std::vector<std::vector<float>> waveData(waveDomain.size());
+  for (size_t i = 0; i < waveDomain.size(); ++i) {
+    std::vector<float> currCoordinate(2);
+    currCoordinate[0] = waveDomain[i];
+    currCoordinate[1] = waveRange[i];
   }
   return waveData;
 }

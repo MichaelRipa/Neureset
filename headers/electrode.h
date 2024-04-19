@@ -1,6 +1,7 @@
 #ifndef ELECTRODE_H
 #define ELECTRODE_H
 
+#include "globals.h"
 #include "wave.h"
 #include <vector>
 #include <map>
@@ -8,7 +9,7 @@
 
 class Electrode {
 public:
-  enum class Band { Gamma, Beta, Alpha, Theta }; 
+  
   Electrode(int numBands);
   ~Electrode();
   
@@ -25,7 +26,7 @@ public:
   void applyTreatmentToWaves(float offset);
 
   // Collects data from all waves for the current time point for plotting or analysis
-  std::vector<std::vector<float>> collectWaveData(int numPointsPerWave) const;
+  std::vector<std::vector<float>> collectWaveData(Band band) const;
 
 private:
   int numBands;

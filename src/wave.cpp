@@ -45,15 +45,16 @@ void Wave::applyFrequencyOffset(float offset) {
   }
 }
 
-std::vector<float> Wave::getCurrentWaveform(int numPoints) const {
+std::vector<float> Wave::getCurrentWaveform() const {
   // Computes a wave to plot with respect to the current frequencies and amplitudes.
-  std::vector<float> waveform(numPoints);
+  // Intuitively, this returns the "y" values of the wave function on [0,1] with respect to `numPoints`
+  std::vector<float> waveform(MESH_PRECISION);
 
   // TODO: In future implementations, the timeStep should also be based on a timeStart and timeEnd
   // I.e. supporting returning data for a simulated real-time signal
-  float timeStep = 1.0 / numPoints;  // Adjust timeStep based on the actual time span you wish to cover
+  float timeStep = 1.0 / MESH_PRECISION;  // Adjust timeStep based on the actual time span you wish to cover
 
-  for (int i = 0; i < numPoints; ++i) {
+  for (int i = 0; i < MESH_PRECISION; ++i) {
     float t = i * timeStep;  // Current time point
     float wavePoint = 0.0;
 
@@ -66,6 +67,16 @@ std::vector<float> Wave::getCurrentWaveform(int numPoints) const {
   }
 
   return waveform;
+}
+
+std::vector<float> Wave::getTimeSteps() const {
+  // Intuitively, this returns the "t" (or "x") values of the wave function on [0,1] with respect to `MESH_PRECISION`
+  std::vector<float> timeSteps(MESH_PRECISION);
+  float timeStep = 1.0 / MESH_PRECISION;
+  for (int i = 0; i < MESH_PRECISION; ++i) {
+    timeSteps.push_back(i * timeStep);  // Current time point
+  }
+  return timeSteps;
 }
 
 float Wave::randomFloat(float min, float max) const {
