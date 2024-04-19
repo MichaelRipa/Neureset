@@ -115,9 +115,11 @@ void NeuresetDevice::clearAllSessions() {
 }
 
 void NeuresetDevice::uploadAllSessions() {
-  pc->uploadData(allSessions);
-  // Once data is uploaded, can clear list to avoid duplicate uploads
-  clearAllSessions();
+  if (allSessions.size() != 0) {
+    pc->uploadData(allSessions);
+    // Once data is uploaded, can clear list to avoid duplicate uploads
+    clearAllSessions();
+  }
 }
 
 void NeuresetDevice::updateConnectionStatus()
