@@ -111,10 +111,10 @@ void NeuresetDevice::clearAllSessions() {
   for (Session* session : allSessions) {
     delete session;
   }
-  allSessions.clear()
+  allSessions.clear();
 }
 
-void NeurosetDevice::uploadAllSessions() {
+void NeuresetDevice::uploadAllSessions() {
   pc->uploadData(allSessions);
   // Once data is uploaded, can clear list to avoid duplicate uploads
   clearAllSessions();
