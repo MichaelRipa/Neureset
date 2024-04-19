@@ -1,8 +1,10 @@
 #pragma once
 #include "session.h"
 #include "eeg-headset.h"
+#include "pc-interface.h"
 #include "globals.h"
 #include <QDateTime>
+#include <vector>
 
 class NeuresetDevice {
 public:
@@ -23,6 +25,9 @@ public:
     void connectionLossPauseSession();
 
     void stopSession();
+
+    void clearAllSessions();
+    void uploadAllSessions();
 
     void calculateBaselineAverages();
 
@@ -46,7 +51,9 @@ public:
     
 private:
     EEGHeadset* eegHeadset;
-    Session* currentSession;
+    Session* currentSession = nullptr;
+    PCInterface* pc;
+    std::vector<Session*> allSessions;
 
     bool deviceOn;
     int batteryLevel;

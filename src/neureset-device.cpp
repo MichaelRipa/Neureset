@@ -11,7 +11,13 @@ NeuresetDevice::NeuresetDevice()
       currentDateTime(QDate(1970, 1, 1), QTime(0,0,0)), currentSessionStatus(SessionStatus::NotStarted)
 {}
 
-NeuresetDevice::~NeuresetDevice() {}
+NeuresetDevice::~NeuresetDevice() {
+  delete pc;
+  clearAllSessions();
+  if (currentSession) {
+    delete currentSession;
+  }
+}
 
 void NeuresetDevice::startSession() {
     // Implementation for starting a session
@@ -99,6 +105,19 @@ void NeuresetDevice::stopSession() {
   updateConnectionStatus();
 
   Model::Instance()->stateChanged();
+}
+
+void NeuresetDevice::clearAllSessions() {
+  for (Session* session : allSessions) {
+    delete session;
+  }
+  allSessions.clear()
+}
+
+void NeurosetDevice::uploadAllSessions() {
+  pc->uploadData(allSessions);
+  // Once data is uploaded, can clear list to avoid duplicate uploads
+  clearAllSessions();
 }
 
 void NeuresetDevice::updateConnectionStatus()
