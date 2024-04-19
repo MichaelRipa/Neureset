@@ -2,6 +2,7 @@
 #define EEGHEADSET_H
 
 #include <vector>
+#include "electrode.h"
 
 class NeuresetDevice; // Forward reference
 
@@ -21,6 +22,7 @@ public:
     std::vector<double> getSignal(int siteIndex);
 private:
     NeuresetDevice* neuresetDevice;
+    std::vector<Electrode*> electrodes;
     int numSites;
     bool connected;
     std::vector<int> siteBandRanges;

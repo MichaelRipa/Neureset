@@ -17,6 +17,7 @@ void Electrode::initializeElectrode() {
     for (auto& band : frequencyRanges) {
         // Initialize each wave with the frequency and amplitude range
         waves[index++] = Wave(band.second.first, band.second.second, 0.5, 3.0);
+        waves[index].initializeWaveform();
     }
 }
 
@@ -42,3 +43,7 @@ std::vector<std::vector<float>> Electrode::collectWaveData(int numPointsPerWave)
   }
   return waveData;
 }
+
+bool Electrode::getConnectionStatus() {return connectionStatus;}
+
+void Electrode::setConnectionStatus(bool c) {connectionStatus = c;}

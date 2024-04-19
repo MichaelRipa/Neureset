@@ -11,9 +11,12 @@ public:
   enum class Band { Gamma, Beta, Alpha, Theta }; 
   Electrode(int numBands);
   ~Electrode();
-
-  // Initializes all waves with the appropriate band parameters
+  
   void initializeElectrode();
+
+  void setConnectionStatus(bool c);
+
+  bool getConnectionStatus();
 
   // Computes the baseline frequencies for all waves
   void computeBaselineFrequencies();
@@ -26,6 +29,7 @@ public:
 
 private:
   int numBands;
+  bool connectionStatus; // TODO: Enum?
   std::vector<Wave> waves; // Waves corresponding to different frequency bands
   static const std::map<Band, std::pair<float, float>> frequencyRanges;
 };
