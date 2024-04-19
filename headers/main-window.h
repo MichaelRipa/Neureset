@@ -75,13 +75,13 @@ private slots:
 
 
     // --- Admin panel ---
-    void handleApplyBandRangeToAllSitesButtonPressed();
     void handleChargeBatteryButtonPressed();
     void handleConnectButtonPressed();
     void handleDisconnectButtonPressed();
 
     void handleWaveSettingsBandRangeSelectedChanged();
     void handleWaveSettingsSiteSelectedChanged();
+    void initializeComboBoxes();
 
 
 };

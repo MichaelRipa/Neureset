@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     model = Model::Instance();
 
     ui->setupUi(this);
+    initializeComboBoxes();
 
     // ---- Non-GUI connections ----
     connect(model, SIGNAL(modelChanged()), this, SLOT(render()));
@@ -41,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->computerSessionsList, SIGNAL(itemSelectionChanged()), this, SLOT(handleComputerSessionSelectedChanged()));
     connect(ui->computerSelectSiteDropdown, SIGNAL(currentIndexChanged(int)), this, SLOT(handleComputerSiteSelectedChanged()));
 
-    connect(ui->applyBandRangeToAllSitesButton, SIGNAL(released()), this, SLOT(handleApplyBandRangeToAllSitesButtonPressed()));
     connect(ui->chargeBatteryButton, SIGNAL(released()), this, SLOT(handleChargeBatteryButtonPressed()));
     connect(ui->connectButton, SIGNAL(released()), this, SLOT(handleConnectButtonPressed()));
     connect(ui->disconnectButton, SIGNAL(released()), this, SLOT(handleDisconnectButtonPressed()));
@@ -257,11 +257,6 @@ void MainWindow::handleComputerSiteSelectedChanged()
 
 }
 
-void MainWindow::handleApplyBandRangeToAllSitesButtonPressed()
-{
-  qDebug() << "TODO: Implement MainWindow::handleApplyBandRangeToAllSitesButtonPressed()";
-}
-
 void MainWindow::handleChargeBatteryButtonPressed()
 {
   qDebug() << "TODO: Implement MainWindow::handleChargeBatteryButtonPressed()";
@@ -287,6 +282,23 @@ void MainWindow::handleWaveSettingsBandRangeSelectedChanged()
 void MainWindow::handleWaveSettingsSiteSelectedChanged()
 {
   qDebug() << "TODO: Implement MainWindow::handleWaveSettingsSiteSelectedChanged()";
+
+}
+
+void MainWindow::initializeComboBoxes() {
+  // Populate waveSettingsSiteDropdown
+  ui->waveSettingsSiteDropdown->clear(); //Clear existing items
+  ui->computerSelectSiteDropdown->clear();
+  for (int i = 0; i < NUM_SITES; ++i) {
+    ui->waveSettingsSiteDropdown->addItem(QString("Site %1").arg(i+1));
+    ui->computerSelectSiteDropdown->addItem(QString("Site %1").arg(i+1));
+  }
+
+  ui->waveSettingsBandRangeDropdown->clear();
+
+  for (int band = 0; band < static_cast<int>(Band::NUM_BANDS); ++band) {
+    ui->waveSettingsBandRangeDropdown->addItem(QString::fromStdString(bandMap(static_cast<Band>(band))));
+  }
 
 }
 

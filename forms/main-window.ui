@@ -12449,25 +12449,6 @@ p, li { white-space: pre-wrap; }
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QToolButton" name="applyBandRangeToAllSitesButton">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>350</y>
-       <width>171</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>8</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>APPLY CURRENT BAND 
-RANGE TO ALL SITES</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>

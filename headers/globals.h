@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+#include <string>
+
 extern const int TICKS_PER_SECOND;
 extern const int NUM_SITES;
 extern const int TIME_TO_COMPUTE_FREQUENCY;
@@ -17,5 +20,8 @@ enum class Band {
   Beta, 
   Alpha, 
   Theta, 
-  All 
+  All, 
+  NUM_BANDS
 }; 
+
+std::string bandMap(Band band);
