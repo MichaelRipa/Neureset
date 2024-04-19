@@ -206,12 +206,16 @@ void MainWindow::handleSessionLogsBackButtonPressed()
 
 void MainWindow::handleSessionLogsClearAllButtonPressed()
 {
-  qDebug() << "TODO: Implement MainWindow::handleSessionLogsClearAllButtonPressed()";
+  
+  model->getNeuresetDevice()->clearAllSessions();
+  qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsClearAllButtonPressed()";
+  qDebug() << "Currently, it clears the sessions directly from NeuresetDevice, it still needs to reflect the changes to the UI";
 }
 
-void MainWindow::handleSessionLogsUploadAllButtonPressed()
-{
-  qDebug() << "TODO: Implement MainWindow::handleSessionLogsUploadAllButtonPressed()";
+void MainWindow::handleSessionLogsUploadAllButtonPressed() {
+  model->getNeuresetDevice()->uploadAllSessions();
+  qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsUploadAllButtonPressed()";
+  qDebug() << "Currently, it does upload the sessions, then clears it from NeuresetDevice, but the UI still needs to be updated";
 }
 
 void MainWindow::handleSaveDateAndTimeChangesButtonPressed()
