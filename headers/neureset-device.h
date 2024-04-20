@@ -13,7 +13,7 @@ public:
     enum class ConnectionStatus { Contact, Treatment, ContactLost, Off };
     // enum class Device { On, Off};
     enum class Battery { Dead, Alive, Charging};
-    enum Screen {Off, MainMenu, InSession, SessionErased, SessionCompleted, SessionLogs, DateAndTime};
+    enum Screen {Off, MainMenu, InSession, SessionCompleted, SessionErased, SessionLogs, DateAndTime};
 
     NeuresetDevice();
     ~NeuresetDevice();
