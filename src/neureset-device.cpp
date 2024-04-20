@@ -12,7 +12,7 @@ NeuresetDevice::NeuresetDevice()
 {}
 
 NeuresetDevice::~NeuresetDevice() {
-  delete pc;
+  delete pcInterface;
   clearAllSessions();
   if (currentSession) {
     delete currentSession;
@@ -116,7 +116,7 @@ void NeuresetDevice::clearAllSessions() {
 
 void NeuresetDevice::uploadAllSessions() {
   if (allSessions.size() != 0) {
-    pc->uploadData(allSessions);
+    pcInterface->uploadData(allSessions);
     // Once data is uploaded, can clear list to avoid duplicate uploads
     clearAllSessions();
   }
@@ -162,6 +162,8 @@ void NeuresetDevice::eegHeadsetDisconnected()
 }
 
 Session* NeuresetDevice::getCurrentSession() { return currentSession; }
+
+PCInterface* NeuresetDevice::getPCInterface() { return pcInterface; }
 
 int NeuresetDevice::getBatteryLevel() { return batteryLevel; }
 

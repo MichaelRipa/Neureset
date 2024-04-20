@@ -39,6 +39,7 @@ public:
     void updateConnectionStatus();
 
     Session* getCurrentSession();
+    PCInterface* getPCInterface();
     int getBatteryLevel();
     ConnectionStatus getCurrentConnectionStatus();
     SessionStatus getCurrentSessionStatus();
@@ -52,7 +53,7 @@ public:
 private:
     EEGHeadset* eegHeadset;
     Session* currentSession = nullptr;
-    PCInterface* pc;
+    PCInterface* pcInterface;
     std::vector<Session*> allSessions;
 
     bool deviceOn;
