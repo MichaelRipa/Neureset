@@ -8,7 +8,7 @@
 NeuresetDevice::NeuresetDevice()
     : deviceOn(true), batteryLevel(100),
       currentScreen(Screen::MainMenu), currentConnectionStatus(ConnectionStatus::ContactLost),
-      currentDateTime(QDate(1970, 1, 1), QTime(0,0,0)), currentSessionStatus(SessionStatus::NotStarted)
+      currentDateTime(QDate(1970, 1, 1), QTime(0,0,0)), currentSessionStatus(SessionStatus::NotStarted), pcInterface(new PCInterface)
 {}
 
 NeuresetDevice::~NeuresetDevice() {
