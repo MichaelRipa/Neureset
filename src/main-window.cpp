@@ -252,8 +252,21 @@ void MainWindow::handleComputerSessionSelectedChanged()
 
 void MainWindow::handleComputerSiteSelectedChanged()
 {
-  // TODO: I don't think there is anything keeping track of the selected site yet.
-  qDebug() << "TODO: Implement MainWindow::handleComputerSiteSelectedChanged()";
+  QString selectedSite = ui->computerSelectSiteDropdown->currentText();
+  QStringList parts = selectedSite.split(" ");  // Splits at space
+  if (parts.size() == 2) {
+    bool ok;
+    int siteNumber = parts.at(1).toInt(&ok);  // Converts the second part to integer
+    if (ok) {
+      qDebug() << "Site number is:" << siteNumber;
+    } else {
+      qDebug() << "Conversion failed";
+    }
+  } else {
+    qDebug() << "Unexpected format";
+  }
+
+  qDebug() << "TODO: Finish implementing MainWindow::handleComputerSiteSelectedChanged(), it still needs to grab the SessionLogs and update the UI.";
 
 }
 

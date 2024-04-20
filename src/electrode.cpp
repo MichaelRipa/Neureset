@@ -4,14 +4,6 @@ Electrode::Electrode(int numBands) : numBands(numBands) {}
 
 Electrode::~Electrode() {}
 
-// Initialization of the static map
-const std::map<Band, std::pair<float, float>> Electrode::frequencyRanges = {
-    {Band::Gamma, {30.0, 100.0}},
-    {Band::Beta, {12.0, 30.0}},
-    {Band::Alpha, {8.0, 12.0}},
-    {Band::Theta, {4.0, 8.0}}
-};
-
 void Electrode::initializeElectrode() {
     int index = 0;
     for (auto& band : frequencyRanges) {

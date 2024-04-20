@@ -32,7 +32,6 @@ private:
   int numBands;
   bool connectionStatus; // TODO: Enum?
   std::vector<Wave> waves; // Waves corresponding to different frequency bands
-  static const std::map<Band, std::pair<float, float>> frequencyRanges;
 };
 
 #endif // ELECTRODE_H
