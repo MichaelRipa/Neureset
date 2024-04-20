@@ -51,6 +51,7 @@ void NeuresetDevice::runCurrentSessionStage() {
     // Add running of current stage to event queue. The callbacks called when ready, and they also handle
     // changing the session stage (so not done here).
     if(currentSession->getStage() == Session::Stage::computePreTreatmentBaselines) {
+        qDebug("Computing pre-treatment frequencies..");
         Model::Instance()->addToEventQueue(Event::EventType::CalculateBaselineAverages, TIME_TO_COMPUTE_FREQUENCY);
     }
     // If at this stage, treatment is applied to the next site
@@ -60,6 +61,7 @@ void NeuresetDevice::runCurrentSessionStage() {
         Model::Instance()->addToEventQueue(Event::EventType::CalculateFrequencyAtCurrentSite, TIME_TO_COMPUTE_FREQUENCY);
     }
     else if (currentSession->getStage() == Session::Stage::computePostTreatmentBaselines) {
+                qDebug("Computing post-treatment frequencies..");
         Model::Instance()->addToEventQueue(Event::EventType::CalculateBaselineAverages, TIME_TO_COMPUTE_FREQUENCY);
     }
 }
@@ -154,7 +156,7 @@ void NeuresetDevice::calculateBaselineAverages()
 void NeuresetDevice::calculateFrequencyAtCurrentSite()
 {
     int currentSite = currentSession->getTreatmentCurrentSite();
-    int timePerSubTreatment = SITE_TREATMENT_DURATION / SITE_TREATMENT_DURATION;
+    int timePerSubTreatment = SITE_TREATMENT_DURATION / SITE_TREATMENT_AMOUNT;
 
     qDebug("Site %d pre-treatment frequency: %f", currentSite, 3.0);
     qDebug("Time per sub-treatment: %d", timePerSubTreatment);
