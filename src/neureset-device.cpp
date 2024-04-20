@@ -143,12 +143,23 @@ void NeuresetDevice::calculateBaselineAverages()
 void NeuresetDevice::calculateFrequencyAtCurrentSite()
 {
     int currentSite = currentSession->getTreatmentCurrentSite();
+    int timePerSubTreatment = SITE_TREATMENT_DURATION / SITE_TREATMENT_DURATION;
+
     qDebug("Site %d pre-treatment frequency: %f", currentSite, 3.0);
+
+    // Add treatment events (which compute the freq and apply offset, and timed so this processs is every 1/16th of a sceond)
+    for (int i = 1; i <= SITE_TREATMENT_AMOUNT; i++) {
+        Model::Instance()->addToEventQueue(Event::EventType::ApplyTreatmentToCurrentSite, timePerSubTreatment * i);
+    }
 
 }
 
 void NeuresetDevice::applyTreatmentToCurrentSite()
 {
+    int currentSite = currentSession->getTreatmentCurrentSite();
+
+    qDebug("Site %d: Current frequency is %f", currentSite, 3.2);
+    qDebug("Site %d: Adding +%d offset", currentSite, OFFSET_FREQUENCY);
 
 }
 

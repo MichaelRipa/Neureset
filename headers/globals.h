@@ -12,8 +12,8 @@ extern const int MESH_PRECISION;
 extern const int OFFSET_FREQUENCY;
 
 // Session treament related time values (in ms)
-extern const SITE_TREATMENT_DURATION = 1000;
-extern const SITE_TREATMENT_FREQUENCY_DIVISOR = 16;
+extern const int SITE_TREATMENT_DURATION;
+extern const int SITE_TREATMENT_AMOUNT;  // If duration is 1 second and treatment amount is 16, offset applied every 1/16 second
 
 
 
