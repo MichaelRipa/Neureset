@@ -25,7 +25,9 @@ SOURCES += \
     src/pc.cpp \
     src/pc-interface.cpp \
     src/session.cpp \
-    src/user-interface.cpp
+    src/user-interface.cpp \
+    src/electrode.cpp \
+    src/wave.cpp
 
 HEADERS += \
     # $$PWD/headers/* \
@@ -43,7 +45,9 @@ HEADERS += \
     headers/pc.h \
     headers/pc-interface.h \
     headers/session.h \
-    headers/user-interface.h
+    headers/user-interface.h \
+    headers/electrode.h \
+    headers/wave.h
 
 FORMS += \
     forms/main-window.ui
