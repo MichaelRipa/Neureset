@@ -137,6 +137,27 @@ void NeuresetDevice::updateConnectionStatus()
         currentConnectionStatus = ConnectionStatus::ContactLost;
 }
 
+void NeuresetDevice::turnOn()
+{
+    if (batteryLevel > 0) {
+        deviceOn = true;
+        currentScreen = Screen::MainMenu;
+    }
+}
+
+void NeuresetDevice::turnOff() {
+    deviceOn = false;
+    currentScreen = Screen::Off;
+    currentConnectionStatus = ConnectionStatus::Off;
+
+    // Case user was in the middle of a session
+    if (currentSession) {
+        delete currentSession;
+        currentSession = nullptr;
+    }
+
+}
+
 void NeuresetDevice::calculateBaselineAverages()
 {
     qDebug("Baseline averages totally calculated.");

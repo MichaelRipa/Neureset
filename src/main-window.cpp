@@ -124,6 +124,7 @@ void MainWindow::renderNeuresetDevice()
 
 
     }
+    // No specifics needed
     else if (neuresetDevice->getCurrentScreen() == NeuresetDevice::Screen::SessionCompleted) {
 
     }
@@ -241,10 +242,15 @@ void MainWindow::handleDateAndTimeBackButtonPressed()
 
 void MainWindow::handlePowerButtonPressed()
 {
-  // TODO: Check if screen on/off, if on set to off (and vice versa)
-  // TODO: There might be other things to check for (e.g. if a session is running, if so stop it etc.)
-  // TODO: Also, the battery shouldn't be draining when the device is off and the light should be off 
-  qDebug() << "TODO: Implement MainWindow::handlePowerButtonPressed()";
+    NeuresetDevice* neuresetDevice = model->getNeuresetDevice();
+    // TODO: Check if screen on/off, if on set to off (and vice versa)
+    // TODO: There might be other things to check for (e.g. if a session is running, if so stop it etc.)
+    // TODO: Also, the battery shouldn't be draining when the device is off and the light should be off
+    if (neuresetDevice->isOn())
+        neuresetDevice->turnOff();
+    else
+        neuresetDevice->turnOn();
+    render();
 }
 
 void MainWindow::handleComputerSessionSelectedChanged()

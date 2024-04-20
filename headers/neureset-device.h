@@ -43,6 +43,9 @@ public:
 
     void updateConnectionStatus();
 
+    void turnOn();
+    void turnOff();
+
     Session* getCurrentSession();
     PCInterface* getPCInterface();
     int getBatteryLevel();
