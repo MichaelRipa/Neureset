@@ -6,6 +6,9 @@ const int TIME_TO_COMPUTE_FREQUENCY = 5000;
 const int SESSION_PAUSED_TIMEOUT = 5000;
 const int MESH_PRECISION = 1000;
 
+const int SITE_TREATMENT_DURATION = 1000;
+const int SITE_TREATMENT_AMOUNT = 16;
+
 std::string bandMap(Band band) {
   switch (band) {
   case Band::Gamma: return "Gamma";

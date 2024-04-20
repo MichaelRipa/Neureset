@@ -8,7 +8,7 @@ int Session::nextID = 0;
 Session::Session(int numSites, QDateTime startTime)
     : ID(nextID), currentStage(Stage::computePreTreatmentBaselines), numSites(numSites),
       startTime(startTime), endTime(0.0), elapsedTime(0), running(true),
-      updateElapsedTimeTimer(new QTimer(this)), timeBeforeLastStart(0)
+      updateElapsedTimeTimer(new QTimer(this)), timeBeforeLastStart(0), currentTreatmentSite(1)
 {
 
     Session::nextID++;
@@ -34,6 +34,12 @@ void Session::setStage(Stage stage)
 {
     currentStage = stage;
 }
+
+void Session::setTreatmentCurrentSite(int site)
+{
+    treatmentCurrentSite = site;
+}
+
 
 Session::Stage Session::getStage()
 {
@@ -94,7 +100,12 @@ void Session::updateElapsedTime()
 }
 
 int Session::getNumSites() {
-  return numSites;
+    return numSites;
+}
+
+int Session::getTreatmentCurrentSite()
+{
+    return treatmentCurrentSite;
 }
 
 QDateTime Session::getStartTime() {

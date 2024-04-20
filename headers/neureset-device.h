@@ -29,7 +29,11 @@ public:
     void clearAllSessions();
     void uploadAllSessions();
 
+    // In-session treatment related functions
     void calculateBaselineAverages();
+    void calculateFrequencyAtCurrentSite();
+    void applyTreatmentToCurrentSite();
+
 
     void setEEGHeadset(EEGHeadset* eegHeadset);
 

@@ -9,6 +9,13 @@ extern const int NUM_SITES;
 extern const int TIME_TO_COMPUTE_FREQUENCY;
 extern const int SESSION_PAUSED_TIMEOUT;
 extern const int MESH_PRECISION;
+extern const int OFFSET_FREQUENCY;
+
+// Session treament related time values (in ms)
+extern const int SITE_TREATMENT_DURATION;
+extern const int SITE_TREATMENT_AMOUNT;  // If duration is 1 second and treatment amount is 16, offset applied every 1/16 second
+
+
 
 //enum class SessionStatus { NotStarted, InProgress, Paused, Completed };
 //enum class Light { Red, Green, Blue, Off };

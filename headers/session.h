@@ -31,12 +31,15 @@ public:
     void pauseTimer();
 
     void setStage(Stage stage);
-    Stage getStage();
+
+    void setTreatmentCurrentSite(int site);
 
     bool isRunning();
+    Stage getStage();
     int getElapsedTime();
     float getProgress();
     int getNumSites();
+    int getTreatmentCurrentSite();
     QDateTime getStartTime();
     std::vector<float> getBaselineFrequenciesBefore();
     std::vector<float> getBaselineFrequenciesAfter();
@@ -63,7 +66,7 @@ private:
     QElapsedTimer timeSinceLastStart;
     int timeBeforeLastStart;
 
-    int nextSiteToTreat;
+    int treatmentCurrentSite;  // Current site that treatment is being applied to (or will be applied to next)
     bool running;  // True iff treatment currently being applied
 
     // before and after dominant frequenices for each site
