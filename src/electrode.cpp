@@ -20,6 +20,14 @@ void Electrode::computeBaselineFrequencies() {
   }
 }
 
+std::vector<float> Electrode::getBaselineFrequencies() {
+  std::vector<float> baselineFreqs(waves.size());
+  for (size_t i = 0; i < waves.size(); ++i) {
+    baselineFreqs[i] = waves[i].getDominantFrequency();
+  }
+  return baselineFreqs;
+}
+
 void Electrode::applyTreatmentToWaves(float offset) {
   // Applies the treatment to the waves
   for (size_t i = 0; i < waves.size(); ++i) {

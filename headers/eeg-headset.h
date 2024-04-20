@@ -20,6 +20,10 @@ public:
     int getNumSites();
     bool isConnected() const;
     std::vector<std::vector<float>> getSignal(int siteIndex, Band band);
+    void computeBaselineFrequencies();
+    float getBaselineFrequencyForSite(int siteIndex);
+    std::vector<float> getBaselineFrequencies();
+    void applyTreatmentToSite(int siteIndex, float offset);
 private:
     NeuresetDevice* neuresetDevice;
     std::vector<Electrode*> electrodes;

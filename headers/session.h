@@ -42,6 +42,8 @@ public:
     QDateTime getStartTime();
     std::vector<float> getBaselineFrequenciesBefore();
     std::vector<float> getBaselineFrequenciesAfter();
+    void setBaselineFrequenciesBefore(std::vector<float> freqs);
+    void setBaselineFrequenciesAfter(std::vector<float> freqs);
 
 private:
     static int nextID;
