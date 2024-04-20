@@ -3,10 +3,12 @@
 #include "main-window.h"
 #include "ui_main-window.h"
 #include "globals.h"
+#include "session-log.h"
 #include <QGraphicsOpacityEffect>
 #include <QDebug>
 #include <QDate>
 #include <QTime>
+#include <vector>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -254,9 +256,11 @@ void MainWindow::handleComputerSiteSelectedChanged()
 {
   QString selectedSite = ui->computerSelectSiteDropdown->currentText();
   QStringList parts = selectedSite.split(" ");  // Splits at space
+  int siteNumber = 1;
+
   if (parts.size() == 2) {
     bool ok;
-    int siteNumber = parts.at(1).toInt(&ok);  // Converts the second part to integer
+    siteNumber = parts.at(1).toInt(&ok);  // Converts the second part to integer
     if (ok) {
       qDebug() << "Site number is:" << siteNumber;
     } else {
@@ -265,8 +269,35 @@ void MainWindow::handleComputerSiteSelectedChanged()
   } else {
     qDebug() << "Unexpected format";
   }
+  std::vector<SessionLog> logs = model->getNeuresetDevice()->getPCInterface()->loadAllSessionLogs();
+  ui->computerSessionsList->clear();
+  ui->computerBaselineFrequencyBefore->clear();
+  ui->computerBaselineFrequencyAfter->clear();
 
-  qDebug() << "TODO: Finish implementing MainWindow::handleComputerSiteSelectedChanged(), it still needs to grab the SessionLogs and update the UI.";
+  if (!logs.empty()) {
+    for (const auto& log : logs) {
+      QString formattedDate = log.startTime.toString("yyyy-MM-dd.hh:mm");
+      QString listItem = QString::number(log.id) + ". " + formattedDate;
+      ui->computerSessionsList->addItem(listItem);
+    }
+
+    if (siteNumber - 1 < logs[0].beforeFrequencies.size() && siteNumber - 1 < logs[0].afterFrequencies.size()) {
+      // Safe to access the first log and its frequency data
+      float beforeFrequency = logs[0].beforeFrequencies[siteNumber - 1];
+      float afterFrequency = logs[0].afterFrequencies[siteNumber - 1];
+      // Populate the UI elements
+      ui->computerBaselineFrequencyBefore->setText(QString::number(beforeFrequency, 'f', 2));
+      ui->computerBaselineFrequencyAfter->setText(QString::number(afterFrequency, 'f', 2));
+    } else {
+      // Handle cases where there are no logs or siteNumber is out of bounds
+      ui->computerBaselineFrequencyBefore->setText("N/A");
+      ui->computerBaselineFrequencyAfter->setText("N/A");
+      qDebug() << "No available data for the first log or site number out of bounds.";
+    }
+  }
+  else {
+    qDebug() << "No logs to display";
+  }
 
 }
 
