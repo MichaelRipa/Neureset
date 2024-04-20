@@ -142,6 +142,7 @@ void NeuresetDevice::turnOn()
     if (batteryLevel > 0) {
         deviceOn = true;
         currentScreen = Screen::MainMenu;
+        updateConnectionStatus();
     }
 }
 
