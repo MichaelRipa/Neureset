@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <utility>
 
 extern const int TICKS_PER_SECOND;
 extern const int NUM_SITES;
@@ -23,5 +24,12 @@ enum class Band {
   All, 
   NUM_BANDS
 }; 
+
+const std::map<Band, std::pair<float, float>> frequencyRanges = {
+    {Band::Gamma, {30.0, 100.0}},
+    {Band::Beta, {12.0, 30.0}},
+    {Band::Alpha, {8.0, 12.0}},
+    {Band::Theta, {4.0, 8.0}}
+};
 
 std::string bandMap(Band band);
