@@ -25,6 +25,5 @@ private:
     std::vector<Electrode*> electrodes;
     int numSites;
     bool connected;
-    std::vector<int> siteBandRanges;
 };
 #endif
