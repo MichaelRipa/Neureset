@@ -32,6 +32,7 @@ public:
     // In-session treatment related functions
     void calculateBaselineAverages();
     void calculateFrequencyAtCurrentSite();
+    void endTreatmentCurrentSite();
     void applyTreatmentToCurrentSite();
 
 

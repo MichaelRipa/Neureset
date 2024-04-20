@@ -61,7 +61,7 @@ void Model::addToEventQueue(Event::EventType eventType, int time)
 void Model::updateEventQueueBasedOnEvent(Event *event) {
     // Only pausing related events cancel out other events when added to the queue.
     if (!(event->getType() == Event::EventType::UserPausedSession ||
-          event->getType() == Event::EventType::connectionLossPausedSession))
+          event->getType() == Event::EventType::ConnectionLossPausedSession))
         return;
     // Remove in session treatment related events
     for (int i = eventQueue.size() - 1; i >= 0; --i) {
@@ -99,7 +99,15 @@ void Model::handleSingleEvent(Event *event)
     if (event->getType() == Event::EventType::CalculateBaselineAverages) {
         neuresetDevice->calculateBaselineAverages();
     }
-
+    else if (event->getType() == Event::EventType::CalculateFrequencyAtCurrentSite) {
+        neuresetDevice->calculateFrequencyAtCurrentSite();
+    }
+    else if (event->getType() == Event::EventType::ApplyTreatmentToCurrentSite) {
+        neuresetDevice->applyTreatmentToCurrentSite();
+    }
+    else if (event->getType() == Event::EventType::EndTreatmentCurrentSite) {
+        neuresetDevice->endTreatmentCurrentSite();
+    }
 }
 
 

@@ -31,7 +31,6 @@ public:
     void pauseTimer();
 
     void setStage(Stage stage);
-
     void setTreatmentCurrentSite(int site);
 
     bool isRunning();

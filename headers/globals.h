@@ -9,7 +9,7 @@ extern const int NUM_SITES;
 extern const int TIME_TO_COMPUTE_FREQUENCY;
 extern const int SESSION_PAUSED_TIMEOUT;
 extern const int MESH_PRECISION;
-extern const int OFFSET_FREQUENCY;
+extern const float OFFSET_FREQUENCY;
 
 // Session treament related time values (in ms)
 extern const int SITE_TREATMENT_DURATION;

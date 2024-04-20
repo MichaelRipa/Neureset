@@ -5,7 +5,7 @@ class Event {
   public:
     enum class EventType {
         CalculateBaselineAverages, CalculateFrequencyAtCurrentSite, ApplyTreatmentToCurrentSite,
-        UserPausedSession, connectionLossPausedSession
+        EndTreatmentCurrentSite, UserPausedSession, ConnectionLossPausedSession
     };
 
     Event(EventType type, int time);
