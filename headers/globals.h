@@ -8,6 +8,13 @@ extern const int NUM_SITES;
 extern const int TIME_TO_COMPUTE_FREQUENCY;
 extern const int SESSION_PAUSED_TIMEOUT;
 extern const int MESH_PRECISION;
+extern const int OFFSET_FREQUENCY;
+
+// Session treament related time values (in ms)
+extern const SITE_TREATMENT_DURATION = 1000;
+extern const SITE_TREATMENT_FREQUENCY_DIVISOR = 16;
+
+
 
 //enum class SessionStatus { NotStarted, InProgress, Paused, Completed };
 //enum class Light { Red, Green, Blue, Off };

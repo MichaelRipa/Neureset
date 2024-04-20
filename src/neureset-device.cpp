@@ -56,6 +56,7 @@ void NeuresetDevice::runCurrentSessionStage() {
     // If at this stage, treatment is applied to the next site
     else if (currentSession->getStage() == Session::Stage::ApplyTreatmentToSites) {
         // Compute dominant frequencies event. Once done, it will create further events for adding treatment.
+        qDebug("Calculating baseline frequency at site %d", currentSession->getTreatmentCurrentSite());
         Model::Instance()->addToEventQueue(Event::EventType::CalculateFrequencyAtCurrentSite, TIME_TO_COMPUTE_FREQUENCY);
     }
     else if (currentSession->getStage() == Session::Stage::computePostTreatmentBaselines) {
@@ -137,6 +138,18 @@ void NeuresetDevice::updateConnectionStatus()
 void NeuresetDevice::calculateBaselineAverages()
 {
     qDebug("Baseline averages totally calculated.");
+}
+
+void NeuresetDevice::calculateFrequencyAtCurrentSite()
+{
+    int currentSite = currentSession->getTreatmentCurrentSite();
+    qDebug("Site %d pre-treatment frequency: %f", currentSite, 3.0);
+
+}
+
+void NeuresetDevice::applyTreatmentToCurrentSite()
+{
+
 }
 
 void NeuresetDevice::setEEGHeadset(EEGHeadset *eegHeadset)
