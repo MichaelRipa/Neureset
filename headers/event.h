@@ -1,9 +1,5 @@
 #ifndef EVENT_H
 #define EVENT_H
-#include <variant>
-#include <memory>
-#include <any>
-
 
 class Event {
   public:
