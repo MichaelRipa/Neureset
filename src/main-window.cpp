@@ -190,7 +190,7 @@ void MainWindow::handleInSessionStartButtonPressed()
 
 void MainWindow::handleInSessionStopButtonPressed()
 {
-  model->getNeuresetDevice()->stopSession();
+  model->getNeuresetDevice()->userStopSession();
   render();
 }
 

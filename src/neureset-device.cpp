@@ -18,7 +18,6 @@ NeuresetDevice::NeuresetDevice()
 
 NeuresetDevice::~NeuresetDevice() {
   delete pcInterface;
-  delete eegHeadset;
   clearAllSessions();
   if (currentSession) {
     delete currentSession;
@@ -31,6 +30,7 @@ void NeuresetDevice::startSession() {
 
         currentSessionStatus = SessionStatus::InProgress;
         currentScreen = Screen::InSession;
+        updateConnectionStatus();
 
         currentSession = new Session(eegHeadset->getNumSites(), currentDateTime);
         currentSession->startTimer();

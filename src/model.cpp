@@ -35,6 +35,9 @@ Model::Model()
 
 Model::~Model()
 {
+    delete neuresetDevice;
+    delete eegHeadset;
+    clearAllEvents();
 }
 
 void Model::eventLoop()
