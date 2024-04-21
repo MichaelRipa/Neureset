@@ -4,9 +4,13 @@
 #include "pc-interface.h"
 #include "globals.h"
 #include <QDateTime>
+#include <QObject>
 #include <vector>
 
-class NeuresetDevice {
+class NeuresetDevice: public QObject
+{
+Q_OBJECT
+
 public:
     // Enums
     enum class SessionStatus { NotStarted, InProgress, UserPausedSession, ConnectionLossPausedSession, UserStoppedSession, Completed };
@@ -20,10 +24,12 @@ public:
 
     void startSession();
     void runCurrentSessionStage();  // Runs the current session step (e.g compute post treatment frequencies)
+    void userStopSession();
     void userPauseSession();
     void userUnpauseSession();
     void connectionLossPauseSession();
 
+    // General function for ending the session before treatment is complete (due to stop pressed / pause timeout)
     void stopSession();
 
     void clearAllSessions();
@@ -42,6 +48,8 @@ public:
     void eegHeadsetDisconnected();
 
     void updateConnectionStatus();
+
+    void setBatteryLevel(int);
 
     void turnOn();
     void turnOff();
@@ -65,10 +73,14 @@ private:
     std::vector<Session*> allSessions;
 
     bool deviceOn;
+    QTimer* batteryDrainTimer;
     int batteryLevel;
     //bool connected; <-- For now, connected iff eeg headset connected
     ConnectionStatus currentConnectionStatus;
     SessionStatus currentSessionStatus;
     Screen currentScreen;
     QDateTime currentDateTime;
+
+private slots:
+    void decreaseBatteryLevel();
 };

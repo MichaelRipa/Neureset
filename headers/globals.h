@@ -15,7 +15,7 @@ extern const float OFFSET_FREQUENCY;
 extern const int SITE_TREATMENT_DURATION;
 extern const int SITE_TREATMENT_AMOUNT;  // If duration is 1 second and treatment amount is 16, offset applied every 1/16 second
 
-
+extern const int BATTERY_DRAIN_FREQUENCY;
 
 //enum class SessionStatus { NotStarted, InProgress, Paused, Completed };
 //enum class Light { Red, Green, Blue, Off };

@@ -91,10 +91,15 @@ void MainWindow::render() {
 void MainWindow::renderNeuresetDevice()
 {
     NeuresetDevice* neuresetDevice = model->getNeuresetDevice();
+
     // Neureset device screen. Order of pages set in UI to match order of NeuresetDevice::Screen enum.
     //qDebug("k: %d",neuresetDevice->getCurrentScreen());
     ui->neuresetDeviceScreen->setCurrentIndex((int)neuresetDevice->getCurrentScreen());
 
+    // Battery
+    ui->batteryLevelBar->setValue(neuresetDevice->getBatteryLevel());
+
+    // LED
     ui->contactLED->graphicsEffect()->setEnabled(true);
     ui->contactLostLED->graphicsEffect()->setEnabled(true);
     ui->treatmentSignalLED->graphicsEffect()->setEnabled(true);
@@ -185,7 +190,7 @@ void MainWindow::handleInSessionStartButtonPressed()
 
 void MainWindow::handleInSessionStopButtonPressed()
 {
-  model->getNeuresetDevice()->stopSession();
+  model->getNeuresetDevice()->userStopSession();
   render();
 }
 
@@ -309,7 +314,8 @@ void MainWindow::handleComputerSiteSelectedChanged()
 
 void MainWindow::handleChargeBatteryButtonPressed()
 {
-  qDebug() << "TODO: Implement MainWindow::handleChargeBatteryButtonPressed()";
+    model->getNeuresetDevice()->setBatteryLevel(100);
+    render();
 }
 
 void MainWindow::handleConnectButtonPressed()
