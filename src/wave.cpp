@@ -38,6 +38,10 @@ void Wave::calculateDominantFrequency() {
   dominantFrequency = numerator / denominator; 
 }
 
+float Wave::getDominantFrequency() {
+  return dominantFrequency;
+}
+
 void Wave::applyFrequencyOffset(float offset) {
   // Adds offset to frequency of each component
   for (int i = 0; i < 3; ++i) {

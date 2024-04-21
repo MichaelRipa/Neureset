@@ -15,6 +15,7 @@ public:
 
     // Recalculates the dominant frequency based on current frequencies and amplitudes
     void calculateDominantFrequency();
+    float getDominantFrequency();
 
     // Applies an offset to the frequencies as part of the treatment
     void applyFrequencyOffset(float offset);

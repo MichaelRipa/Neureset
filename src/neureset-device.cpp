@@ -18,6 +18,7 @@ NeuresetDevice::NeuresetDevice()
 
 NeuresetDevice::~NeuresetDevice() {
   delete pcInterface;
+  delete eegHeadset;
   clearAllSessions();
   if (currentSession) {
     delete currentSession;
@@ -181,14 +182,18 @@ void NeuresetDevice::turnOff() {
 
 void NeuresetDevice::calculateBaselineAverages()
 {
+    eegHeadset->computeBaselineFrequencies();
+
     qDebug("Baseline averages totally calculated.");
 
     // If computed pre-treatment baseline frequencies, start offset frequency treatment processs
     if (currentSession->getStage() == Session::Stage::computePreTreatmentBaselines) {
+        currentSession->setBaselineFrequenciesBefore(eegHeadset->getBaselineFrequencies());
         currentSession->setStage(Session::Stage::ApplyTreatmentToSites);
     }
     // If computed post-treatment baseline frequencies, done treatment
     else if (currentSession->getStage() == Session::Stage::computePostTreatmentBaselines) {
+        currentSession->setBaselineFrequenciesAfter(eegHeadset->getBaselineFrequencies());
         qDebug("Done treatment!");
         currentScreen = Screen::SessionCompleted;
         Model::Instance()->stateChanged();
@@ -226,7 +231,7 @@ void NeuresetDevice::applyTreatmentToCurrentSite()
 
     qDebug("Site %d: Current frequency is %f", currentSite, 3.2);
     qDebug("Site %d: Adding +%d offset", currentSite, OFFSET_FREQUENCY);
-
+    eegHeadset->applyTreatmentToSite(currentSite - 1, OFFSET_FREQUENCY);
 }
 
 void NeuresetDevice::setEEGHeadset(EEGHeadset *eegHeadset)

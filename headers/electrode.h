@@ -21,6 +21,7 @@ public:
 
   // Computes the baseline frequencies for all waves
   void computeBaselineFrequencies();
+  std::vector<float> getBaselineFrequencies();
 
   // Applies the treatment to the waves based on user input or treatment logic
   void applyTreatmentToWaves(float offset);

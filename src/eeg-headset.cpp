@@ -46,6 +46,30 @@ void EEGHeadset::disconnect()
 
 int EEGHeadset::getNumSites() { return numSites; }
 
+std::vector<float>  EEGHeadset::getBaselineFrequencies() { 
+  std::vector<float> freqs(electrodes.size());
+  for (size_t i = 0; i < electrodes.size(); ++i) {
+    freqs[i] = getBaselineFrequencyForSite(i);
+  }
+  return freqs;
+}
+
+void EEGHeadset::computeBaselineFrequencies() {
+  for (size_t i = 0; i < electrodes.size(); ++i) {
+    electrodes[i]->computeBaselineFrequencies();
+  }
+}
+
+float EEGHeadset::getBaselineFrequencyForSite(int siteIndex) { 
+  float frequency = 0;
+  std::vector<float> allFreqs = electrodes[siteIndex]->getBaselineFrequencies();
+  // We assume that the frequency of the waves added together is the sum of the frequencies of the waves it is made up of.
+  for (size_t i = 0; i < allFreqs.size(); ++i) {
+    frequency += allFreqs[i];
+  }
+  return frequency;
+}
+
 bool EEGHeadset::isConnected() const {
     for (int i = 0; i < numSites; ++i) {
       if (!electrodes[i]->getConnectionStatus()){
@@ -53,6 +77,10 @@ bool EEGHeadset::isConnected() const {
       }
     } 
   return true;
+}
+
+void EEGHeadset::applyTreatmentToSite(int siteIndex, float offset) {
+  electrodes[siteIndex]->applyTreatmentToWaves(offset);
 }
 
 std::vector<std::vector<float>> EEGHeadset::getSignal(int siteIndex, Band band) {

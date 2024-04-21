@@ -119,3 +119,11 @@ std::vector<float> Session::getBaselineFrequenciesBefore() {
 std::vector<float> Session::getBaselineFrequenciesAfter() {
   return baselineFrequenciesAfter;
 }
+
+void Session::setBaselineFrequenciesBefore(std::vector<float> freqs) {
+  baselineFrequenciesBefore = freqs;
+}
+
+void Session::setBaselineFrequenciesAfter(std::vector<float> freqs) {
+  baselineFrequenciesAfter = freqs;
+}
