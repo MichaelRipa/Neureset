@@ -8,7 +8,85 @@
 #include <QDebug>
 #include <QDate>
 #include <QTime>
+#include <QFile>
 #include <vector>
+
+bool deleteFile(const QString& filePath) {
+    // Helper file which removes the session logs file from previous runs of the program
+    QFile file(filePath);
+    if (!file.exists()) {
+        qDebug() << "File does not exist:" << filePath;
+        return false;
+    }
+
+    if (file.remove()) {
+        qDebug() << "File deleted successfully:" << filePath;
+        return true;
+    } else {
+        qDebug() << "Failed to delete file:" << filePath;
+        return false;
+    }
+}
+
+// Function to extract site index from string format "Site i"
+int extractSiteIndex(const QString& siteStr) {
+    QRegularExpression re("Site (\\d+)");
+    QRegularExpressionMatch match = re.match(siteStr);
+    if (match.hasMatch()) {
+        return match.captured(1).toInt(); // captured(1) is the first capture group (\d+)
+    }
+    return -1; // Return -1 or any other invalid index if parsing fails
+}
+
+void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* scene) {
+    QPen pen(Qt::blue, 1); // Customize color and line thickness
+    scene->setBackgroundBrush(QBrush(Qt::lightGray));  // Light gray background might help in visibility
+
+    /*qDebug() << "Clearing scene and adding new items";*/
+    scene->clear();
+
+    int itemCount = 0; // To count how many lines are added
+
+    // We need at least two points to start drawing lines
+    /*
+    if (waveData.size() < 2) {
+        qDebug() << "Not enough data to plot lines. Need at least two points.";
+        return;
+    }
+
+    // Ensure each wave data has exactly two floats
+    for (size_t i = 0; i < waveData.size(); i++) {
+        if (waveData[i].size() != 2) {
+            qDebug() << "Skipping wave with incorrect length:" << waveData[i].size();
+            continue;
+        }
+    }
+    */
+    // Draw lines between consecutive waves
+    for (size_t i = 1; i < waveData.size(); ++i) {
+        float x1 = waveData[i - 1][0];
+        float y1 = waveData[i - 1][1];
+        float x2 = waveData[i][0];
+        float y2 = waveData[i][1];
+
+        if (i == 1) {  // Additional debug for first line
+            //qDebug() << "Drawing first line from (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")";
+        }
+
+        scene->addLine(x1, y1, x2, y2, pen);
+        itemCount++;
+    }
+
+    /*qDebug() << "Items added to scene:" << itemCount;
+    if (itemCount > 0) {
+        scene->setSceneRect(scene->itemsBoundingRect());  // Update scene rect to encompass all items
+        qDebug() << "Scene rect after update:" << scene->sceneRect();
+    } else {
+        qDebug() << "No lines were added to the scene.";
+    }
+    */
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -21,6 +99,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     initializeComboBoxes();
+    deleteFile(PC_FILENAME);
+    renderPC();
+    
 
     // ---- Non-GUI connections ----
     connect(model, SIGNAL(modelChanged()), this, SLOT(render()));
@@ -146,15 +227,60 @@ void MainWindow::renderNeuresetDevice()
 
 }
 
-void MainWindow::renderAdminPanel()
-{
+void MainWindow::renderAdminPanel() {
     EEGHeadset* eegHeadset = model->getEEGHeadset();
+    QString siteStr = ui->waveSettingsSiteDropdown->currentText();
+    QString bandStr = ui->waveSettingsBandRangeDropdown->currentText();
+    Band band = stringToBand(bandStr);
+    int siteIndex = extractSiteIndex(siteStr);
 
+    if (!ui->wavePlot->scene()) {
+        ui->wavePlot->setScene(new QGraphicsScene(this));
+    }
+
+    auto data = eegHeadset->getSignal(siteIndex, band);
+    // Adjust these based on your data's typical range
+        float horizontalScale = 1.0;  // Adjust this based on the time range or desired horizontal stretch
+        float verticalScale = 1.0;    // Adjust this based on the amplitude range
+
+        for (auto& wave : data) {
+            for (size_t i = 0; i < wave.size(); i++) {
+                if (i % 2 == 0) {  // Even index: x-coordinate (time)
+                    wave[i] *= horizontalScale;
+                } else {           // Odd index: y-coordinate (amplitude)
+                    wave[i] *= verticalScale;
+                }
+            }
+        }
+    if (data.empty() || (data.size() > 0 && data[0].empty())) {
+        qDebug() << "No data to plot. Data vector is empty or first vector is empty.";
+        return;
+    }
+
+  /*
+    qDebug() << "Data points to plot:" << data.size();
+    if (!data.empty()) {
+        qDebug() << "Sample data point:" << data[0][0] << "," << data[0][1];
+    }
+  */
+
+    plotData(data, ui->wavePlot->scene());
+    ui->wavePlot->scene()->setSceneRect(ui->wavePlot->scene()->itemsBoundingRect());
+    ui->wavePlot->fitInView(ui->wavePlot->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
+    ui->wavePlot->viewport()->update();
+    ui->label_5->hide();  // Ensure label is hidden
+
+    /*
+
+    qDebug() << "Scene rect after update:" << ui->wavePlot->scene()->sceneRect();
+    qDebug() << "Number of items in the scene:" << ui->wavePlot->scene()->items().count();
+    qDebug() << "Site Index:" << siteIndex;
+    */
 }
 
 void MainWindow::renderPC()
 {
-
+  handleComputerSiteSelectedChanged();
 }
 
 void MainWindow::handleStartSessionButtonPressed()
@@ -166,6 +292,17 @@ void MainWindow::handleStartSessionButtonPressed()
 void MainWindow::handleSessionLogsButtonPressed()
 {
   model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::SessionLogs);
+  ui->sessionLogsList->clear();
+  std::vector<Session*> allSessions = model->getNeuresetDevice()->getAllSessions();
+  if (!allSessions.empty()) {
+    // Populate screen with all Sessions stored on NeuresetDevice
+    for (size_t i = 0; i < allSessions.size(); ++i) {
+      QString formattedDate = allSessions[i]->getStartTime().toString("yyyy-MM-dd.hh:mm");
+      QString listItem = QString::number(i+1) + ". " + formattedDate;
+      // TODO: Check wherther the frequencies ar estored here
+      ui->sessionLogsList->addItem(listItem);
+    }
+  }
   render();
 }
 
@@ -196,8 +333,9 @@ void MainWindow::handleInSessionStopButtonPressed()
 
 void MainWindow::handleSessionCompleteBackButtonPressed()
 {
-  // TODO: Define the steps which ocuur after a Session is completed
-  qDebug() << "TODO: Implement MainWindow::handleSessionCompleteBackButtonPressed()";
+  model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::MainMenu);
+  render();
+  qDebug() << "TODO: Verify MainWindow::handleSessionCompleteBackButtonPressed() doesn't need to perform any additional steps asides from changing screen state and rendering.";
 }
 
 void MainWindow::handleSessionIncompleteBackButtonPressed()
@@ -214,16 +352,21 @@ void MainWindow::handleSessionLogsBackButtonPressed()
 
 void MainWindow::handleSessionLogsClearAllButtonPressed()
 {
-  
+
   model->getNeuresetDevice()->clearAllSessions();
-  qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsClearAllButtonPressed()";
-  qDebug() << "Currently, it clears the sessions directly from NeuresetDevice, it still needs to reflect the changes to the UI";
+  ui->sessionLogsList->clear();
+  //qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsClearAllButtonPressed()";
+  //qDebug() << "Currently, it clears the sessions directly from NeuresetDevice, it still needs to reflect the changes to the UI";
 }
 
 void MainWindow::handleSessionLogsUploadAllButtonPressed() {
+qDebug() << "Uploading sessions: (num sessions) - " << model->getNeuresetDevice()->getAllSessions().size();
   model->getNeuresetDevice()->uploadAllSessions();
-  qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsUploadAllButtonPressed()";
-  qDebug() << "Currently, it does upload the sessions, then clears it from NeuresetDevice, but the UI still needs to be updated";
+  handleComputerSiteSelectedChanged();
+  handleSessionLogsButtonPressed();
+  // Call the handler for displaying the PC logs
+  //qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsUploadAllButtonPressed()";
+
 }
 
 void MainWindow::handleSaveDateAndTimeChangesButtonPressed()
@@ -280,7 +423,9 @@ void MainWindow::handleComputerSiteSelectedChanged()
   } else {
     qDebug() << "Unexpected format";
   }
+
   std::vector<SessionLog> logs = model->getNeuresetDevice()->getPCInterface()->loadAllSessionLogs();
+  qDebug() << "Current size of session logs: " << logs.size();
   ui->computerSessionsList->clear();
   ui->computerBaselineFrequencyBefore->clear();
   ui->computerBaselineFrequencyAfter->clear();
@@ -288,6 +433,7 @@ void MainWindow::handleComputerSiteSelectedChanged()
   if (!logs.empty()) {
     for (const auto& log : logs) {
       QString formattedDate = log.startTime.toString("yyyy-MM-dd.hh:mm");
+      qDebug() << "Extracted date: " << formattedDate;
       QString listItem = QString::number(log.id) + ". " + formattedDate;
       ui->computerSessionsList->addItem(listItem);
     }
@@ -332,13 +478,18 @@ void MainWindow::handleDisconnectButtonPressed()
 
 void MainWindow::handleWaveSettingsBandRangeSelectedChanged()
 {
-  qDebug() << "TODO: Implement MainWindow::handleWaveSettingsBandRangeSelectedChanged()";
+  NeuresetDevice::SessionStatus status = model->getNeuresetDevice()->getCurrentSessionStatus();
+  if ((status == NeuresetDevice::SessionStatus::InProgress)) {
+    renderAdminPanel();
+  }
 }
 
 void MainWindow::handleWaveSettingsSiteSelectedChanged()
 {
-  qDebug() << "TODO: Implement MainWindow::handleWaveSettingsSiteSelectedChanged()";
-
+  NeuresetDevice::SessionStatus status = model->getNeuresetDevice()->getCurrentSessionStatus();
+  if ((status == NeuresetDevice::SessionStatus::InProgress)) {
+   renderAdminPanel();
+  }
 }
 
 void MainWindow::initializeComboBoxes() {

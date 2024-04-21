@@ -56,7 +56,7 @@ std::vector<float> Wave::getCurrentWaveform() const {
 
   // TODO: In future implementations, the timeStep should also be based on a timeStart and timeEnd
   // I.e. supporting returning data for a simulated real-time signal
-  float timeStep = 1.0 / MESH_PRECISION;  // Adjust timeStep based on the actual time span you wish to cover
+  float timeStep = 10.0 / MESH_PRECISION;  // Adjust timeStep based on the actual time span you wish to cover
 
   for (int i = 0; i < MESH_PRECISION; ++i) {
     float t = i * timeStep;  // Current time point

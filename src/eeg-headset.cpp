@@ -1,5 +1,6 @@
 #include "eeg-headset.h"
 #include "neureset-device.h"
+#include <QDebug>
 
 EEGHeadset::EEGHeadset(int numSites)
     : numSites(numSites), connected(false) {
@@ -49,7 +50,9 @@ int EEGHeadset::getNumSites() { return numSites; }
 std::vector<float>  EEGHeadset::getBaselineFrequencies() { 
   std::vector<float> freqs(electrodes.size());
   for (size_t i = 0; i < electrodes.size(); ++i) {
-    freqs[i] = getBaselineFrequencyForSite(i);
+    float f = getBaselineFrequencyForSite(i);
+    qDebug() << "Frequency at site " << i << " " << f;
+    freqs[i] = f;
   }
   return freqs;
 }
@@ -95,5 +98,6 @@ std::vector<std::vector<float>> EEGHeadset::getSignal(int siteIndex, Band band) 
  *
  * The function outputs the signal as a vector of (time, amplitude) pairs, where each pair represents a point in the waveform. This output is suitable for graphical representation in the UI, showing either the entire spectrum of brainwave activity or focusing on a specific frequency band.
 */
-  return electrodes[siteIndex]->collectWaveData(band);
+    qDebug() << "in getSignal()";
+    return electrodes[siteIndex]->collectWaveData(band);
 }

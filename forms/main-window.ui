@@ -936,7 +936,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="deviceOffPage"/>
      <widget class="QWidget" name="mainMenuPage">
@@ -12950,6 +12950,21 @@ p, li { white-space: pre-wrap; }
       <string>CONSOLE</string>
      </property>
     </widget>
+    <zorder>console</zorder>
+    <zorder>label</zorder>
+    <zorder>label_4</zorder>
+    <zorder>label_5</zorder>
+    <zorder>label_6</zorder>
+    <zorder>label_7</zorder>
+    <zorder>waveSettingsSiteDropdown</zorder>
+    <zorder>waveSettingsBandRangeDropdown</zorder>
+    <zorder>label_8</zorder>
+    <zorder>chargeBatteryButton</zorder>
+    <zorder>connectButton</zorder>
+    <zorder>disconnectButton</zorder>
+    <zorder>line</zorder>
+    <zorder>label_9</zorder>
+    <zorder>wavePlot</zorder>
    </widget>
    <widget class="QWidget" name="adminPanel_2" native="true">
     <property name="geometry">

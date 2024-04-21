@@ -55,6 +55,7 @@ public:
     void turnOff();
 
     Session* getCurrentSession();
+    std::vector<Session*> getAllSessions();
     PCInterface* getPCInterface();
     int getBatteryLevel();
     ConnectionStatus getCurrentConnectionStatus();

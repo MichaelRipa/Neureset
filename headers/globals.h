@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <QString>
 
 extern const int TICKS_PER_SECOND;
 extern const int NUM_SITES;
@@ -10,6 +11,7 @@ extern const int TIME_TO_COMPUTE_FREQUENCY;
 extern const int SESSION_PAUSED_TIMEOUT;
 extern const int MESH_PRECISION;
 extern const float OFFSET_FREQUENCY;
+extern const QString PC_FILENAME;
 
 // Session treament related time values (in ms)
 extern const int SITE_TREATMENT_DURATION;
@@ -39,4 +41,7 @@ const std::map<Band, std::pair<float, float>> frequencyRanges = {
     {Band::Theta, {4.0, 8.0}}
 };
 
+
 std::string bandMap(Band band);
+
+Band stringToBand(QString bandStr);

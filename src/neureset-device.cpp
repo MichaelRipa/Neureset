@@ -232,7 +232,7 @@ void NeuresetDevice::applyTreatmentToCurrentSite()
     int currentSite = currentSession->getTreatmentCurrentSite();
 
     qDebug("Site %d: Current frequency is %f", currentSite, 3.2);
-    qDebug("Site %d: Adding +%d offset", currentSite, OFFSET_FREQUENCY);
+    qDebug("Site %d: Adding +%f offset", currentSite, OFFSET_FREQUENCY);
     eegHeadset->applyTreatmentToSite(currentSite - 1, OFFSET_FREQUENCY);
 }
 
@@ -259,6 +259,9 @@ void NeuresetDevice::eegHeadsetDisconnected()
 }
 
 Session* NeuresetDevice::getCurrentSession() { return currentSession; }
+
+std::vector<Session*> NeuresetDevice::getAllSessions() { return allSessions;
+}
 
 PCInterface* NeuresetDevice::getPCInterface() { return pcInterface; }
 

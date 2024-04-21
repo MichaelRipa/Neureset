@@ -32,7 +32,7 @@ public:
 private:
   int numBands;
   bool connectionStatus; // TODO: Enum?
-  std::vector<Wave> waves; // Waves corresponding to different frequency bands
+  std::vector<Wave*> waves; // Waves corresponding to different frequency bands
 };
 
 #endif // ELECTRODE_H

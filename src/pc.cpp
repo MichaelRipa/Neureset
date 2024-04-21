@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <QString>
+#include <QDebug>
 #include <QDateTime>
 #include <sys/stat.h>
 
@@ -17,14 +18,16 @@ bool PC::fileExists(std::string filename) {
 }
 
 void PC::uploadData(std::vector<Session*> sessions) {
+
+  qDebug() << "In PC::uploadData()";
   std::ofstream file;
 
   // Check if the file exists and has content
-  bool exists = fileExists(PC_FILENAME);
-  bool writeHeader = !exists || std::ifstream(PC_FILENAME).peek() == std::ifstream::traits_type::eof();
+  bool exists = fileExists(PC_FILENAME.toStdString());
+  bool writeHeader = !exists || std::ifstream(PC_FILENAME.toStdString()).peek() == std::ifstream::traits_type::eof();
 
   // Open the file in append mode
-  file.open(PC_FILENAME, std::ios::app);
+  file.open(PC_FILENAME.toStdString(), std::ios::app);
 
   if (writeHeader) {
       // Assuming all sessions have the same number of sites (for header purposes)
@@ -37,9 +40,12 @@ void PC::uploadData(std::vector<Session*> sessions) {
       }
       file << "\n";
   }
+  qDebug() << "Session size: " << sessions.size();
 
   // Iterate over each session and write the data
   for (size_t i = 0; i < sessions.size(); ++i) {
+
+      qDebug() << "Iterating over sessions: " << i;
       const auto session = sessions[i];
       file << i + 1 << ", " << session->getStartTime().toString("yyyy-MM-dd.hh:mm").toStdString();
 
@@ -51,21 +57,25 @@ void PC::uploadData(std::vector<Session*> sessions) {
           float before = j < beforeFrequencies.size() ? beforeFrequencies[j] : 0.0f;
           float after = j < afterFrequencies.size() ? afterFrequencies[j] : 0.0f;
           file << ", " << before << ", " << after;
+          qDebug() << "Session" << i << "Site" << j << "Before frequency:" << before << "After frequency:" << after;
+
       }
       file << "\n";
   }
 
   // Close the file
   file.close();
-} 
+}
 
 std::vector<SessionLog> PC::loadSessionLogs() {
     std::vector<SessionLog> logs;
-    std::string filename = PC_FILENAME;
+    std::string filename = PC_FILENAME.toStdString();
     std::ifstream file(filename);
+    qDebug() << "In PC::loadSessionLogs()";
 
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filename << std::endl;
+        qDebug() << "Failed to open file";
         return logs;
     }
 
@@ -83,8 +93,7 @@ std::vector<SessionLog> PC::loadSessionLogs() {
 
         // Read Date and Time
         getline(ss, cell, ',');
-        log.startTime = QDateTime::fromString(QString::fromStdString(cell), "yyyy-MM-dd.hh:mm");
-
+        log.startTime = QDateTime::fromString(QString::fromStdString(cell).trimmed(), "yyyy-MM-dd.hh:mm");
         // Read before and after frequencies
         while (getline(ss, cell, ',')) {
             float frequency = std::stof(cell);
@@ -100,5 +109,6 @@ std::vector<SessionLog> PC::loadSessionLogs() {
     }
 
     file.close();
+    qDebug() << "Finished loading logs in PC::loadSessionLogs(): (num logs) " << logs.size();
     return logs;
 }
