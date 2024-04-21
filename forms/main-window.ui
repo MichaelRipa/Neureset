@@ -7738,28 +7738,28 @@
         </colorrole>
         <colorrole role="Text">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>0</red>
-           <green>0</green>
-           <blue>0</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="BrightText">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="ButtonText">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>0</red>
-           <green>0</green>
-           <blue>0</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
@@ -7796,6 +7796,15 @@
            <red>38</red>
            <green>162</green>
            <blue>105</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="HighlightedText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
@@ -7893,28 +7902,28 @@
         </colorrole>
         <colorrole role="Text">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>0</red>
-           <green>0</green>
-           <blue>0</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="BrightText">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="ButtonText">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>0</red>
-           <green>0</green>
-           <blue>0</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
@@ -7951,6 +7960,15 @@
            <red>38</red>
            <green>162</green>
            <blue>105</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="HighlightedText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
@@ -8057,10 +8075,10 @@
         </colorrole>
         <colorrole role="BrightText">
          <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
           </color>
          </brush>
         </colorrole>
@@ -8109,6 +8127,15 @@
           </color>
          </brush>
         </colorrole>
+        <colorrole role="HighlightedText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="0">
+           <red>191</red>
+           <green>64</green>
+           <blue>64</blue>
+          </color>
+         </brush>
+        </colorrole>
         <colorrole role="AlternateBase">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
@@ -8148,11 +8175,22 @@
        </disabled>
       </palette>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="autoFillBackground">
       <bool>true</bool>
      </property>
      <property name="value">
       <number>75</number>
+     </property>
+     <property name="textVisible">
+      <bool>true</bool>
+     </property>
+     <property name="format">
+      <string>%p</string>
      </property>
     </widget>
     <widget class="QWidget" name="LEDs" native="true">

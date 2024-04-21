@@ -54,26 +54,28 @@ void Model::addToEventQueue(Event::EventType eventType, int time)
 {
     Event* event = new Event(eventType, elapsedTimer.elapsed() + time);
     eventQueue.push_back(event);
-    updateEventQueueBasedOnEvent(event);
 }
 
-
-void Model::updateEventQueueBasedOnEvent(Event *event) {
-    // Only pausing related events cancel out other events when added to the queue.
-    if (!(event->getType() == Event::EventType::UserPausedSession ||
-          event->getType() == Event::EventType::ConnectionLossPausedSession))
-        return;
-    // Remove in session treatment related events
+void Model::clearTreatmentEvents()
+{
     for (int i = eventQueue.size() - 1; i >= 0; --i) {
         if (eventQueue[i]->getType() == Event::EventType::CalculateBaselineAverages ||
             eventQueue[i]->getType() == Event::EventType::CalculateFrequencyAtCurrentSite ||
-            eventQueue[i]->getType() == Event::EventType::ApplyTreatmentToCurrentSite)
+            eventQueue[i]->getType() == Event::EventType::ApplyTreatmentToCurrentSite ||
+            eventQueue[i]->getType() == Event::EventType::EndTreatmentCurrentSite)
         {
             Event* removedEvent = eventQueue[i];
             eventQueue.erase(eventQueue.begin() + i);
             delete removedEvent;
         }
     }
+}
+
+void Model::clearAllEvents()
+{
+    for (Event* event: eventQueue)
+        delete event;
+    eventQueue.clear();
 }
 
 void Model::handleReadyEvents() {
@@ -107,6 +109,14 @@ void Model::handleSingleEvent(Event *event)
     }
     else if (event->getType() == Event::EventType::EndTreatmentCurrentSite) {
         neuresetDevice->endTreatmentCurrentSite();
+    }
+    // Pause timeout
+    else if (event->getType() == Event::EventType::UserPausedSession) {
+        neuresetDevice->stopSession();
+    }
+    // Pause timeout
+    else if (event->getType() == Event::EventType::ConnectionLossPausedSession) {
+        neuresetDevice->stopSession();
     }
 }
 

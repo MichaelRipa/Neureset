@@ -10,6 +10,8 @@ const float OFFSET_FREQUENCY = 5.0;
 const int SITE_TREATMENT_DURATION = 1000;
 const int SITE_TREATMENT_AMOUNT = 16;
 
+const int BATTERY_DRAIN_FREQUENCY = 1000;  // How long until battery drains 1 percent
+
 std::string bandMap(Band band) {
   switch (band) {
   case Band::Gamma: return "Gamma";

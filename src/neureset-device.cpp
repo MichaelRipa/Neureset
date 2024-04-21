@@ -6,10 +6,15 @@
 
 
 NeuresetDevice::NeuresetDevice()
-    : deviceOn(true), batteryLevel(100),
+    : deviceOn(true), batteryDrainTimer(new QTimer(this)), batteryLevel(100),
       currentScreen(Screen::MainMenu), currentConnectionStatus(ConnectionStatus::ContactLost),
       currentDateTime(QDate(1970, 1, 1), QTime(0,0,0)), currentSessionStatus(SessionStatus::NotStarted), pcInterface(new PCInterface)
-{}
+{
+    batteryDrainTimer->start(BATTERY_DRAIN_FREQUENCY);
+
+    // --- Callback connections ---
+    connect(batteryDrainTimer, SIGNAL(timeout()), this, SLOT(decreaseBatteryLevel()));
+}
 
 NeuresetDevice::~NeuresetDevice() {
   delete pcInterface;
@@ -66,13 +71,12 @@ void NeuresetDevice::runCurrentSessionStage() {
     }
 }
 
-
+// Pauses a session when user specifies
 void NeuresetDevice::userPauseSession() {
-  // Implementation for pausing a session when user specifies
     currentSession->pauseTimer();
     currentSessionStatus = SessionStatus::UserPausedSession;
     updateConnectionStatus();
-
+    Model::Instance()->clearTreatmentEvents();
     Model::Instance()->addToEventQueue(Event::EventType::UserPausedSession, SESSION_PAUSED_TIMEOUT);
 }
 
@@ -94,21 +98,29 @@ void NeuresetDevice::connectionLossPauseSession() {
     currentSession->pauseTimer();
     currentSessionStatus = SessionStatus::ConnectionLossPausedSession;
     updateConnectionStatus();
-
+    Model::Instance()->clearTreatmentEvents();
     Model::Instance()->addToEventQueue(Event::EventType::ConnectionLossPausedSession, SESSION_PAUSED_TIMEOUT);
     Model::Instance()->stateChanged();
 
 }
 
-void NeuresetDevice::stopSession() {
-  // Implementation for stopping a session
-  delete currentSession;
-  currentSessionStatus = SessionStatus::UserStoppedSession;
-  currentScreen = Screen::SessionErased;
-  updateConnectionStatus();
 
-  Model::Instance()->stateChanged();
+void NeuresetDevice::stopSession() {
+    delete currentSession;
+    currentSession = nullptr;
+    currentScreen = Screen::SessionErased;
+    updateConnectionStatus();
+    Model::Instance()->clearAllEvents();
+    Model::Instance()->stateChanged();
 }
+
+
+// Called when the user clicks the stop session buttton
+void NeuresetDevice::userStopSession() {
+    currentSessionStatus = SessionStatus::UserStoppedSession;
+    stopSession();
+}
+
 
 void NeuresetDevice::clearAllSessions() {
   for (Session* session : allSessions) {
@@ -137,6 +149,11 @@ void NeuresetDevice::updateConnectionStatus()
         currentConnectionStatus = ConnectionStatus::ContactLost;
 }
 
+void NeuresetDevice::setBatteryLevel(int batteryLevel)
+{
+    this->batteryLevel = batteryLevel;
+}
+
 void NeuresetDevice::turnOn()
 {
     if (batteryLevel > 0) {
@@ -144,6 +161,7 @@ void NeuresetDevice::turnOn()
         currentScreen = Screen::MainMenu;
         updateConnectionStatus();
     }
+    Model::Instance()->stateChanged();
 }
 
 void NeuresetDevice::turnOff() {
@@ -156,6 +174,8 @@ void NeuresetDevice::turnOff() {
         delete currentSession;
         currentSession = nullptr;
     }
+    Model::Instance()->clearAllEvents(); // If in middle of session, any running/pending work is discarded
+    Model::Instance()->stateChanged();
 
 }
 
@@ -252,3 +272,16 @@ QDateTime NeuresetDevice::getCurrentDateTime() { return currentDateTime; }
 void NeuresetDevice::setCurrentDateTime(QDateTime dt) { currentDateTime = dt; }
 
 void NeuresetDevice::setCurrentScreen(Screen screen) { currentScreen = screen; }
+
+void NeuresetDevice::decreaseBatteryLevel()
+{
+    if (!deviceOn)
+        return;
+    if (batteryLevel > 0) {
+        batteryLevel--;
+        Model::Instance()->stateChanged();
+    }
+    if (batteryLevel == 0) {
+        turnOff();
+    }
+}
