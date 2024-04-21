@@ -39,9 +39,25 @@ int extractSiteIndex(const QString& siteStr) {
 }
 
 void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* scene) {
+    //QGraphicsView* view = new QGraphicsView(scene);
+    //view->scale(1000, 1000);
+
+
+
     QPen pen(Qt::blue, 1); // Customize color and line thickness
     scene->setBackgroundBrush(QBrush(Qt::lightGray));  // Light gray background might help in visibility
 
+    qDebug() << waveData.size();
+    qDebug("Wave data:");
+    for (vector<float> innerData: waveData) {
+        for (float ele: innerData) {
+            //qDebug() << ele;
+        }
+       // qDebug() << innerData.size();
+        qDebug("------");
+    }
+
+  //  exit(0);
     /*qDebug() << "Clearing scene and adding new items";*/
     scene->clear();
 
@@ -63,11 +79,11 @@ void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* s
     }
     */
     // Draw lines between consecutive waves
-    for (size_t i = 1; i < waveData.size(); ++i) {
-        float x1 = waveData[i - 1][0];
-        float y1 = waveData[i - 1][1];
-        float x2 = waveData[i][0];
-        float y2 = waveData[i][1];
+    for (int i = 1; i < waveData.size() / 2; ++i) {
+        float x1 =  i - 1; // waveData[i - 1][0];
+        float y1 = waveData[i - 1][1] * 300;
+        float x2 = i; // waveData[i][0];
+        float y2 = waveData[i][1] * 300;
 
         if (i == 1) {  // Additional debug for first line
             //qDebug() << "Drawing first line from (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")";
@@ -162,8 +178,8 @@ void MainWindow::init_render() {
 void MainWindow::render() {
     //qDebug("Rendering.");
     renderNeuresetDevice();
-   // renderAdminPanel();
-    //renderPC();
+    renderAdminPanel();
+    renderPC();
 
 
 
