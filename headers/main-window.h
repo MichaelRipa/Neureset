@@ -46,6 +46,8 @@ private slots:
     void renderNeuresetDevice();
     void renderAdminPanel();
     void renderPC();
+    void populateBaselinesPC(int siteNumber, int logID);
+    int extractSiteIndexPC();
 
     // --- Neureset device ---
     void handleStartSessionButtonPressed();

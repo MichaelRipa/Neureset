@@ -38,6 +38,46 @@ int extractSiteIndex(const QString& siteStr) {
     return -1; // Return -1 or any other invalid index if parsing fails
 }
 
+int MainWindow::extractSiteIndexPC() {
+  QString selectedSite = ui->computerSelectSiteDropdown->currentText();
+  QStringList parts = selectedSite.split(" ");  // Splits at space
+  int siteNumber = 1;
+
+  if (parts.size() == 2) {
+    bool ok;
+    siteNumber = parts.at(1).toInt(&ok);  // Converts the second part to integer
+    if (ok) {
+      qDebug() << "Site number is:" << siteNumber;
+      return siteNumber;
+    } else {
+      qDebug() << "Conversion failed";
+      return -1;
+    }
+  } else {
+    qDebug() << "Unexpected format";
+    return -1;
+  }
+}
+
+void MainWindow::populateBaselinesPC(int siteNumber, int logID) {
+  std::vector<SessionLog> logs = model->getNeuresetDevice()->getPCInterface()->loadAllSessionLogs();
+  ui->computerBaselineFrequencyBefore->clear();
+  ui->computerBaselineFrequencyAfter->clear();
+  if (siteNumber - 1 < logs[logID].beforeFrequencies.size() && siteNumber - 1 < logs[logID].afterFrequencies.size()) {
+  // Safe to access the first log and its frequency data
+      float beforeFrequency = logs[logID].beforeFrequencies[siteNumber - 1];
+      float afterFrequency = logs[logID].afterFrequencies[siteNumber - 1];
+      // Populate the UI elements
+      ui->computerBaselineFrequencyBefore->setText(QString::number(beforeFrequency, 'f', 2));
+      ui->computerBaselineFrequencyAfter->setText(QString::number(afterFrequency, 'f', 2));
+    } else {
+      // Handle cases where there are no logs or siteNumber is out of bounds
+      ui->computerBaselineFrequencyBefore->setText("N/A");
+      ui->computerBaselineFrequencyAfter->setText("N/A");
+      qDebug() << "No available data for the first log or site number out of bounds.";
+    }
+}
+
 void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* scene) {
     //QGraphicsView* view = new QGraphicsView(scene);
     //view->scale(1000, 1000);
@@ -414,13 +454,26 @@ void MainWindow::handlePowerButtonPressed()
     render();
 }
 
-void MainWindow::handleComputerSessionSelectedChanged()
-{
-  qDebug() << "TODO: Implement MainWindow::handleComputerSessionSelectedChanged()";
+void MainWindow::handleComputerSessionSelectedChanged() {
+    QList<QListWidgetItem*> selectedItems = ui->computerSessionsList->selectedItems();
+    if (!selectedItems.isEmpty()) {
+        // Get the first selected item
+        QListWidgetItem* selectedItem = selectedItems.first();
+
+        // Get the index of the selected item
+        int logID = ui->computerSessionsList->row(selectedItem);
+
+        qDebug() << "Selected item index:" << logID;
+        int siteNumber = extractSiteIndexPC();
+        populateBaselinesPC(siteNumber, logID);
+        } else {
+            qDebug() << "No item is selected.";
+        }
 }
 
 void MainWindow::handleComputerSiteSelectedChanged()
 {
+  /*
   QString selectedSite = ui->computerSelectSiteDropdown->currentText();
   QStringList parts = selectedSite.split(" ");  // Splits at space
   int siteNumber = 1;
@@ -436,6 +489,8 @@ void MainWindow::handleComputerSiteSelectedChanged()
   } else {
     qDebug() << "Unexpected format";
   }
+  */
+  int siteNumber = extractSiteIndexPC();
 
   std::vector<SessionLog> logs = model->getNeuresetDevice()->getPCInterface()->loadAllSessionLogs();
   qDebug() << "Current size of session logs: " << logs.size();
