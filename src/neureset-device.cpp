@@ -175,6 +175,7 @@ void NeuresetDevice::calculateBaselineAverages()
     else if (currentSession->getStage() == Session::Stage::computePostTreatmentBaselines) {
         currentSession->setBaselineFrequenciesAfter(eegHeadset->getBaselineFrequencies());
         qDebug("Done treatment!");
+        allSessions.push_back(currentSession);
         currentScreen = Screen::SessionCompleted;
         Model::Instance()->stateChanged();
     }
@@ -203,6 +204,7 @@ void NeuresetDevice::endTreatmentCurrentSite() {
         currentSession->setTreatmentCurrentSite(currentSite + 1);
     else
         currentSession->setStage(Session::Stage::computePostTreatmentBaselines);
+
 }
 
 void NeuresetDevice::applyTreatmentToCurrentSite()
