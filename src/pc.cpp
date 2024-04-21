@@ -6,10 +6,25 @@
 #include <QDebug>
 #include <QDateTime>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <string>
 
 PC::PC() {}
 
 PC::~PC() {}
+
+std::string getHomeDirectory() {
+    const char* homedir = getenv("HOME");
+    if (!homedir) {
+        struct passwd* pwd = getpwuid(getuid());
+        if (pwd) {
+            homedir = pwd->pw_dir;
+        }
+    }
+    return std::string(homedir ? homedir : ".");
+}
 
 bool PC::fileExists(std::string filename) {
   // Simple helper function which checks whether the session log file has already been written
@@ -20,14 +35,17 @@ bool PC::fileExists(std::string filename) {
 void PC::uploadData(std::vector<Session*> sessions) {
 
   qDebug() << "In PC::uploadData()";
+  std::string homeDir = getHomeDirectory(); // Get the home directory path
+  std::string fullPath = homeDir + "/" + PC_FILENAME.toStdString(); // Append the filename to the home directory path
+
   std::ofstream file;
 
   // Check if the file exists and has content
-  bool exists = fileExists(PC_FILENAME.toStdString());
-  bool writeHeader = !exists || std::ifstream(PC_FILENAME.toStdString()).peek() == std::ifstream::traits_type::eof();
+  bool exists = fileExists(fullPath);
+  bool writeHeader = !exists || std::ifstream(fullPath).peek() == std::ifstream::traits_type::eof();
 
   // Open the file in append mode
-  file.open(PC_FILENAME.toStdString(), std::ios::app);
+  file.open(fullPath, std::ios::app);
 
   if (writeHeader) {
       // Assuming all sessions have the same number of sites (for header purposes)
@@ -69,12 +87,14 @@ void PC::uploadData(std::vector<Session*> sessions) {
 
 std::vector<SessionLog> PC::loadSessionLogs() {
     std::vector<SessionLog> logs;
-    std::string filename = PC_FILENAME.toStdString();
-    std::ifstream file(filename);
+    std::string homeDir = getHomeDirectory();
+    std::string fullPath = homeDir + "/" + PC_FILENAME.toStdString();
+
+    std::ifstream file(fullPath);
     qDebug() << "In PC::loadSessionLogs()";
 
     if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
+        std::cerr << "Failed to open file: " << fullPath << std::endl;
         qDebug() << "Failed to open file";
         return logs;
     }

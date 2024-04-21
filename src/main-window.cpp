@@ -47,14 +47,11 @@ void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* s
     QPen pen(Qt::blue, 1); // Customize color and line thickness
     scene->setBackgroundBrush(QBrush(Qt::lightGray));  // Light gray background might help in visibility
 
-    qDebug() << waveData.size();
-    qDebug("Wave data:");
     for (vector<float> innerData: waveData) {
         for (float ele: innerData) {
             //qDebug() << ele;
         }
        // qDebug() << innerData.size();
-        qDebug("------");
     }
 
   //  exit(0);
@@ -179,7 +176,7 @@ void MainWindow::render() {
     //qDebug("Rendering.");
     renderNeuresetDevice();
     renderAdminPanel();
-    renderPC();
+    //renderPC();
 
 
 

@@ -98,6 +98,5 @@ std::vector<std::vector<float>> EEGHeadset::getSignal(int siteIndex, Band band) 
  *
  * The function outputs the signal as a vector of (time, amplitude) pairs, where each pair represents a point in the waveform. This output is suitable for graphical representation in the UI, showing either the entire spectrum of brainwave activity or focusing on a specific frequency band.
 */
-    qDebug() << "in getSignal()";
     return electrodes[siteIndex]->collectWaveData(band);
 }
