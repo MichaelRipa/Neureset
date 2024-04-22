@@ -233,7 +233,7 @@ void NeuresetDevice::applyTreatmentToCurrentSite()
     int currentSite = currentSession->getTreatmentCurrentSite();
 
     qDebug("Site %d: Current frequency is %f", currentSite, 3.2);
-    qDebug("Site %d: Adding +%f offset", currentSite, OFFSET_FREQUENCY);
+    qDebug("Site %d: Adding +%f offset", currentSite, 5.0);
     eegHeadset->applyTreatmentToSite(currentSite - 1, OFFSET_FREQUENCY);
 }
 
