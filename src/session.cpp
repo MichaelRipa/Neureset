@@ -83,7 +83,16 @@ bool Session::isRunning()
 
 float Session::getProgress()
 {
-    return 0;
+    if (currentStage == Stage::computePreTreatmentBaselines)
+        return 0;
+    else if (currentStage == Stage::ApplyTreatmentToSites) {
+        int numSitesCompleted = treatmentCurrentSite - 1;
+        if (numSitesCompleted <= 1)
+                numSitesCompleted = 1;
+        return ((float)numSitesCompleted) / (float) numSites;
+    }
+    else
+        return 99;
 }
 
 int Session::getElapsedTime()

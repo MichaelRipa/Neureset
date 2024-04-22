@@ -255,6 +255,8 @@ void MainWindow::renderNeuresetDevice()
 
 
         // Progress bar
+        // qDebug() << "Progress: " << neuresetDevice->getCurrentSession()->getProgress() * 100;
+        ui->sessionProgressBar->setValue(neuresetDevice->getCurrentSession()->getProgress() * 100);
 
         // Buttons not clickable
 

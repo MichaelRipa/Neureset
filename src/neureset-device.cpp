@@ -70,6 +70,7 @@ void NeuresetDevice::runCurrentSessionStage() {
     else if (currentSession->getStage() == Session::Stage::computePostTreatmentBaselines) {
                 qDebug("Computing post-treatment frequencies..");
         Model::Instance()->addToEventQueue(Event::EventType::CalculateBaselineAverages, TIME_TO_COMPUTE_FREQUENCY);
+        Model::Instance()->stateChanged();
     }
 }
 
@@ -191,7 +192,7 @@ void NeuresetDevice::calculateBaselineAverages()
 {
     eegHeadset->computeBaselineFrequencies();
 
-    qDebug("Baseline averages totally calculated.");
+    qDebug("Baseline averages calculated.");
 
     // If computed pre-treatment baseline frequencies, start offset frequency treatment processs
     if (currentSession->getStage() == Session::Stage::computePreTreatmentBaselines) {
@@ -214,7 +215,7 @@ void NeuresetDevice::calculateFrequencyAtCurrentSite()
     int timePerSubTreatment = SITE_TREATMENT_DURATION / SITE_TREATMENT_AMOUNT;
 
     qDebug("Site %d pre-treatment frequency: %f", currentSite, 3.0);
-    qDebug("Time per sub-treatment: %d", timePerSubTreatment);
+    // qDebug("Time per sub-treatment: %d", timePerSubTreatment);
 
     // Add treatment events (which compute the freq and apply offset, and timed so this processs is every 1/16th of a sceond)
     for (int i = 1; i <= SITE_TREATMENT_AMOUNT; i++) {
