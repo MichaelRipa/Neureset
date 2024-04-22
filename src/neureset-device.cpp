@@ -34,7 +34,6 @@ void NeuresetDevice::startSession() {
 
         currentSession = new Session(eegHeadset->getNumSites(), currentDateTime);
         eegHeadset->reinitializeElectrodes(); // Ensures frequencies are refreshed between sessions
-        currentSession->startTimer();
         currentSession->setStage(Session::Stage::computePreTreatmentBaselines);
 
         runCurrentSessionStage();
@@ -76,7 +75,6 @@ void NeuresetDevice::runCurrentSessionStage() {
 
 // Pauses a session when user specifies
 void NeuresetDevice::userPauseSession() {
-    currentSession->pauseTimer();
     currentSessionStatus = SessionStatus::UserPausedSession;
     updateConnectionStatus();
     Model::Instance()->clearTreatmentEvents();
@@ -90,7 +88,6 @@ void NeuresetDevice::userUnpauseSession()
 
     if (eegHeadset->isConnected()) {
         currentSessionStatus = SessionStatus::InProgress;
-        currentSession->startTimer();
     }
     // Case where session unpaused but connection lost
     else {
@@ -101,7 +98,6 @@ void NeuresetDevice::userUnpauseSession()
 
 
 void NeuresetDevice::connectionLossPauseSession() {
-    currentSession->pauseTimer();
     currentSessionStatus = SessionStatus::ConnectionLossPausedSession;
     updateConnectionStatus();
     Model::Instance()->clearTreatmentEvents();
@@ -255,7 +251,6 @@ void NeuresetDevice::eegHeadsetConnected()
     // can resume session treatment if in session unless paused by user explicitely
     if (currentScreen == Screen::InSession && currentSessionStatus == SessionStatus::ConnectionLossPausedSession) {
         currentSessionStatus = SessionStatus::InProgress;
-         currentSession->startTimer();
     }
     // If in treatment and not paused, resume treatment.
     updateConnectionStatus();

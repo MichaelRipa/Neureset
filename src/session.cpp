@@ -7,8 +7,7 @@ int Session::nextID = 0;
 
 Session::Session(int numSites, QDateTime startTime)
     : ID(nextID), currentStage(Stage::computePreTreatmentBaselines), numSites(numSites),
-      startTime(startTime), endTime(0.0), elapsedTime(0), running(true),
-      updateElapsedTimeTimer(new QTimer(this)), timeBeforeLastStart(0), treatmentCurrentSite(1)
+      startTime(startTime), running(true), treatmentCurrentSite(1)
 {
 
     Session::nextID++;
@@ -18,13 +17,6 @@ Session::Session(int numSites, QDateTime startTime)
         baselineFrequenciesBefore.push_back(-1);
         baselineFrequenciesAfter.push_back(-1);
     }
-
-    updateElapsedTimeTimer->start();
-    timeSinceLastStart.start();
-
-    // Set up callback connections
-    connect(updateElapsedTimeTimer, SIGNAL(timeout()), this, SLOT(updateElapsedTime()));
-
 }
 
 Session::~Session()
@@ -58,26 +50,26 @@ void Session::saveSessionData() {
     // Implementation for saving session data
 }
 
-void Session::startTimer()
-{
-    if (this->running)
-        return;
-
-    this->running = true;
-    timeBeforeLastStart = elapsedTime;
-    timeSinceLastStart.restart();
-}
-
-void Session::pauseTimer()
-{
-    if (!this->running)
-        return;
-    this->running = false;
-}
-
 bool Session::isRunning()
 {
     return running;
+}
+
+int Session::getEstimatedTimeLeft() {
+    int timeLeft = 0;
+
+    // Post treatment baseline frequency calculations
+    timeLeft += TIME_TO_COMPUTE_FREQUENCY;
+
+    // Estimated time to apply treatments
+    if (currentStage != Stage::computePostTreatmentBaselines) {
+        timeLeft += (TIME_TO_COMPUTE_FREQUENCY + SITE_TREATMENT_DURATION) * (numSites - treatmentCurrentSite);
+    }
+    // Pre-treatment baseline frequency calculations
+    if (currentStage == Stage::computePreTreatmentBaselines)
+            timeLeft += TIME_TO_COMPUTE_FREQUENCY;
+
+    return timeLeft / 1000;
 }
 
 
@@ -93,19 +85,6 @@ float Session::getProgress()
     }
     else
         return 99;
-}
-
-int Session::getElapsedTime()
-{
-    return elapsedTime;
-}
-
-void Session::updateElapsedTime()
-{
-    if (running) {
-        elapsedTime = timeBeforeLastStart + timeSinceLastStart.elapsed();
-        Model::Instance()->modelChanged();
-    }
 }
 
 int Session::getNumSites() {
