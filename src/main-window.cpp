@@ -475,10 +475,12 @@ void MainWindow::handleComputerSiteSelectedChanged()
   ui->computerBaselineFrequencyAfter->clear();
 
   if (!logs.empty()) {
+    int lid = 1;
     for (const auto& log : logs) {
       QString formattedDate = log.startTime.toString("yyyy-MM-dd.hh:mm");
       qDebug() << "Extracted date: " << formattedDate;
-      QString listItem = QString::number(log.id) + ". " + formattedDate;
+      QString listItem = QString::number(lid) + ". " + formattedDate;
+      lid += 1;
       ui->computerSessionsList->addItem(listItem);
     }
 
