@@ -21,6 +21,7 @@ public:
     bool isConnected() const;
     std::vector<std::vector<float>> getSignal(int siteIndex, Band band);
     void computeBaselineFrequencies();
+    void reinitializeElectrodes();
     float getBaselineFrequencyForSite(int siteIndex);
     std::vector<float> getBaselineFrequencies();
     void applyTreatmentToSite(int siteIndex, float offset);

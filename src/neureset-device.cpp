@@ -33,6 +33,7 @@ void NeuresetDevice::startSession() {
         updateConnectionStatus();
 
         currentSession = new Session(eegHeadset->getNumSites(), currentDateTime);
+        eegHeadset->reinitializeElectrodes(); // Ensures frequencies are refreshed between sessions
         currentSession->startTimer();
         currentSession->setStage(Session::Stage::computePreTreatmentBaselines);
 

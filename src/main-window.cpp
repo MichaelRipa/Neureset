@@ -288,7 +288,7 @@ void MainWindow::renderAdminPanel() {
         ui->wavePlot->setScene(new QGraphicsScene(this));
     }
 
-    auto data = eegHeadset->getSignal(siteIndex, band);
+    auto data = eegHeadset->getSignal(siteIndex - 1, band);
     // Adjust these based on your data's typical range
         float horizontalScale = 1.0;  // Adjust this based on the time range or desired horizontal stretch
         float verticalScale = 1.0;    // Adjust this based on the amplitude range
@@ -320,12 +320,6 @@ void MainWindow::renderAdminPanel() {
     ui->wavePlot->viewport()->update();
     ui->label_5->hide();  // Ensure label is hidden
 
-    /*
-
-    qDebug() << "Scene rect after update:" << ui->wavePlot->scene()->sceneRect();
-    qDebug() << "Number of items in the scene:" << ui->wavePlot->scene()->items().count();
-    qDebug() << "Site Index:" << siteIndex;
-    */
 }
 
 void MainWindow::renderPC()
@@ -470,23 +464,6 @@ void MainWindow::handleComputerSessionSelectedChanged() {
 
 void MainWindow::handleComputerSiteSelectedChanged()
 {
-  /*
-  QString selectedSite = ui->computerSelectSiteDropdown->currentText();
-  QStringList parts = selectedSite.split(" ");  // Splits at space
-  int siteNumber = 1;
-
-  if (parts.size() == 2) {
-    bool ok;
-    siteNumber = parts.at(1).toInt(&ok);  // Converts the second part to integer
-    if (ok) {
-      qDebug() << "Site number is:" << siteNumber;
-    } else {
-      qDebug() << "Conversion failed";
-    }
-  } else {
-    qDebug() << "Unexpected format";
-  }
-  */
   int siteNumber = extractSiteIndexPC();
 
   std::vector<SessionLog> logs = model->getNeuresetDevice()->getPCInterface()->loadAllSessionLogs();

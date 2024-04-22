@@ -1,6 +1,14 @@
 #include "electrode.h"
 #include <QDebug>
+
 Electrode::Electrode(int numBands) : numBands(numBands) {
+  int index = 0;
+  waves.resize(numBands, nullptr);
+  for (auto& band : frequencyRanges) {
+    waves[index] = new Wave(band.second.first, band.second.second, 0.1, 1.0);
+    index += 1;
+  }
+    // Initialize each wave with the frequency and amplitude range
   initializeElectrode();
 }
 
@@ -11,15 +19,10 @@ Electrode::~Electrode() {
 }
 
 void Electrode::initializeElectrode() {
-    int index = 0;
-    waves.resize(numBands, nullptr);
-    for (auto& band : frequencyRanges) {
-        // Initialize each wave with the frequency and amplitude range
-        waves[index] = new Wave(band.second.first, band.second.second, 0.1, 1.0);
-
-        waves[index]->initializeWaveform();
-        index += 1;
-    }
+  for (size_t i = 0; i < waves.size(); ++i) {
+    // Sets wave with randomly chosen frequencies and amplitudes (with respect to pre-determined frequency band)
+    waves[i]->initializeWaveform();
+  }
 }
 
 void Electrode::computeBaselineFrequencies() {
