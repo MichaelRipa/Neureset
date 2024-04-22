@@ -153,7 +153,6 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::init_render() {
-    qDebug("init render.");
     opacityEffectContactLED->setOpacity(opacity);
     opacityEffectContactLostLED->setOpacity(opacity);
     opacityEffectTreatmentSignalLED->setOpacity(opacity);
@@ -266,7 +265,7 @@ void MainWindow::renderAdminPanel() {
             }
         }
     if (data.empty() || (data.size() > 0 && data[0].empty())) {
-        qDebug() << "No data to plot. Data vector is empty or first vector is empty.";
+       //  qDebug() << "No data to plot. Data vector is empty or first vector is empty.";
         return;
     }
 
@@ -356,7 +355,7 @@ void MainWindow::handleSessionLogsClearAllButtonPressed()
 }
 
 void MainWindow::handleSessionLogsUploadAllButtonPressed() {
-qDebug() << "Uploading sessions: (num sessions) - " << model->getNeuresetDevice()->getAllSessions().size();
+  qDebug() << "Uploading sessions: (num sessions) - " << model->getNeuresetDevice()->getAllSessions().size();
   model->getNeuresetDevice()->uploadAllSessions();
   handleComputerSiteSelectedChanged();
   handleSessionLogsButtonPressed();
