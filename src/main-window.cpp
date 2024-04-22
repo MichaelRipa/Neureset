@@ -214,7 +214,13 @@ void MainWindow::renderNeuresetDevice()
         ui->sessionProgressBar->setValue(neuresetDevice->getCurrentSession()->getProgress() * 100);
 
         // Buttons not clickable
-
+        ui->inSessionStartButton->setEnabled(
+                    neuresetDevice->getCurrentSessionStatus() != NeuresetDevice::SessionStatus::InProgress &&
+                    neuresetDevice->isConnected()
+                );
+        // can only pause if in progress
+        ui->inSessionPauseButton->setEnabled(
+                    neuresetDevice->getCurrentSessionStatus() == NeuresetDevice::SessionStatus::InProgress);
 
     }
     // No specifics needed

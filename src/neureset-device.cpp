@@ -98,7 +98,8 @@ void NeuresetDevice::userUnpauseSession()
 
 
 void NeuresetDevice::connectionLossPauseSession() {
-    currentSessionStatus = SessionStatus::ConnectionLossPausedSession;
+    if (currentSessionStatus != SessionStatus::UserPausedSession)
+        currentSessionStatus = SessionStatus::ConnectionLossPausedSession;
     updateConnectionStatus();
     Model::Instance()->clearTreatmentEvents();
     Model::Instance()->addToEventQueue(Event::EventType::ConnectionLossPausedSession, SESSION_PAUSED_TIMEOUT);
