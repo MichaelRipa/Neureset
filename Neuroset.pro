@@ -12,10 +12,8 @@ CONFIG += c++17
 SOURCES += \
     #$$PWD/src/* \
     src/main.cpp \
-    src/main-old.cpp \
     src/main-window.cpp \
     src/model.cpp \
-    src/clock.cpp \
     src/eeg-headset.cpp \
     src/event-queue.cpp \
     src/event.cpp \
@@ -35,7 +33,6 @@ HEADERS += \
     headers/main-old.h \
     headers/main-window.h \
     headers/model.h \
-    headers/clock.h \
     headers/eeg-headset.h \
     headers/event-queue.h \
     headers/event.h \
