@@ -184,9 +184,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->waveSettingsBandRangeDropdown, SIGNAL(currentIndexChanged(int)), this, SLOT(handleWaveSettingsBandRangeSelectedChanged()));
     connect(ui->waveSettingsSiteDropdown, SIGNAL(currentIndexChanged(int)), this, SLOT(handleWaveSettingsSiteSelectedChanged()));
 
-    // --- Debugging-only connections (delete later) ---
-    connect(ui->helloWorldButton, SIGNAL(released()), this, SLOT(helloWorld()));
-
     init_render();
 }
 
@@ -554,10 +551,5 @@ void MainWindow::initializeComboBoxes() {
 
 }
 
-
-// Testing
-void MainWindow::helloWorld() {
-    qDebug("Hello world!");
-}
 
 

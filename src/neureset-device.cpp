@@ -84,6 +84,9 @@ void NeuresetDevice::userPauseSession() {
 
 void NeuresetDevice::userUnpauseSession()
 {
+    // Remove the pending pause timeout
+    Model::Instance()->clearEventType(Event::EventType::UserPausedSession);
+
     if (eegHeadset->isConnected()) {
         currentSessionStatus = SessionStatus::InProgress;
         currentSession->startTimer();
@@ -108,6 +111,7 @@ void NeuresetDevice::connectionLossPauseSession() {
 
 
 void NeuresetDevice::stopSession() {
+    //currentSession->pauseTimer();
     delete currentSession;
     currentSession = nullptr;
     currentScreen = Screen::SessionErased;
@@ -161,6 +165,7 @@ void NeuresetDevice::turnOn()
     if (batteryLevel > 0) {
         deviceOn = true;
         currentScreen = Screen::MainMenu;
+        currentSessionStatus = SessionStatus::NotStarted;
         updateConnectionStatus();
     }
     Model::Instance()->stateChanged();
@@ -169,7 +174,8 @@ void NeuresetDevice::turnOn()
 void NeuresetDevice::turnOff() {
     deviceOn = false;
     currentScreen = Screen::Off;
-    currentConnectionStatus = ConnectionStatus::Off;
+    currentSessionStatus = SessionStatus::NotStarted;
+    updateConnectionStatus();
 
     // Case user was in the middle of a session
     if (currentSession) {
@@ -244,8 +250,13 @@ void NeuresetDevice::setEEGHeadset(EEGHeadset *eegHeadset)
 
 void NeuresetDevice::eegHeadsetConnected()
 {
+    Model::Instance()->clearEventType(Event::EventType::ConnectionLossPausedSession);
+    // can resume session treatment if in session unless paused by user explicitely
+    if (currentScreen == Screen::InSession && currentSessionStatus == SessionStatus::ConnectionLossPausedSession) {
+        currentSessionStatus = SessionStatus::InProgress;
+         currentSession->startTimer();
+    }
     // If in treatment and not paused, resume treatment.
-    // TODO - add this.
     updateConnectionStatus();
 }
 

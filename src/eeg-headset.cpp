@@ -22,14 +22,18 @@ void EEGHeadset::setNeuresetDevice(NeuresetDevice *neuresetDevice)
 
 void EEGHeadset::connect()
 {
+    qDebug("Connecting.");
     if (connected)
         return;
+    qDebug("A");
     // This is just a trivial implementation where either all sites are connected or disconnected
     for (int i = 0; i < numSites; ++i) {
       electrodes[i]->setConnectionStatus(true);
      }
+    qDebug("B");
     connected = true;
     neuresetDevice->eegHeadsetConnected();
+    qDebug("C");
 
 }
 
