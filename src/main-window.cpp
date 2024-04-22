@@ -247,12 +247,15 @@ void MainWindow::renderNeuresetDevice()
         ui->startSessionButton->setEnabled(neuresetDevice->isConnected());
     }
     else if (neuresetDevice->getCurrentScreen() == NeuresetDevice::Screen::InSession) {
-        // Session time elapsed
-        //qDebug("%d",neuresetDevice->getCurrentSession()->getElapsedTime());
-        int timeInMS = neuresetDevice->getCurrentSession()->getElapsedTime();
-        int timeInSEC = timeInMS / 1000;
-        ui->sessionTimeLabel->setText(QString("%0").arg(timeInSEC));
+        // Session estimated time left
+        int totalSecondsLeft = neuresetDevice->getCurrentSession()->getEstimatedTimeLeft();
+        int minutes = totalSecondsLeft / 60;
+        int seconds = totalSecondsLeft % 60;
 
+        // Set text with minutes:second format
+        ui->sessionTimeLabel->setText(QString("%1:%2")
+                                      .arg(minutes, 2, 10, QChar('0'))
+                                      .arg(seconds, 2, 10, QChar('0')));
 
         // Progress bar
         // qDebug() << "Progress: " << neuresetDevice->getCurrentSession()->getProgress() * 100;
