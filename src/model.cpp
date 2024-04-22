@@ -47,6 +47,7 @@ void Model::eventLoop()
     // If event queue is empty and neureset device is in session, it is ready to run the current stage
     // of its session treatment (e.g computing post treatment baseline frequencies)
     if (eventQueue.size() == 0 && neuresetDevice->getCurrentSessionStatus() == NeuresetDevice::SessionStatus::InProgress) {
+        qDebug("Running current stage.");
         neuresetDevice->runCurrentSessionStage();
     }
 
@@ -57,6 +58,18 @@ void Model::addToEventQueue(Event::EventType eventType, int time)
 {
     Event* event = new Event(eventType, elapsedTimer.elapsed() + time);
     eventQueue.push_back(event);
+}
+
+void Model::clearEventType(Event::EventType eventType)
+{
+    for (int i = eventQueue.size() - 1; i >= 0; --i) {
+        if (eventQueue[i]->getType() == eventType)
+        {
+            Event* removedEvent = eventQueue[i];
+            eventQueue.erase(eventQueue.begin() + i);
+            delete removedEvent;
+        }
+    }
 }
 
 void Model::clearTreatmentEvents()

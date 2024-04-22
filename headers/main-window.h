@@ -39,8 +39,6 @@ private:
 
 
 private slots:
-
-    void helloWorld();
     void init_render(); // Handles any render specific initialization
     void render();
     void renderNeuresetDevice();

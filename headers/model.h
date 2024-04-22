@@ -28,6 +28,7 @@ public:
     static Model* Instance();
 
     void addToEventQueue(Event::EventType eventType, int time);
+    void clearEventType(Event::EventType eventType);
     void clearTreatmentEvents();
     void clearAllEvents();
 
