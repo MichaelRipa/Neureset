@@ -454,11 +454,11 @@ void MainWindow::handleComputerSessionSelectedChanged() {
         QListWidgetItem* selectedItem = selectedItems.first();
 
         // Get the index of the selected item
-        int logID = ui->computerSessionsList->row(selectedItem);
+        selectedLogID = ui->computerSessionsList->row(selectedItem);
 
-        qDebug() << "Selected item index:" << logID;
+        qDebug() << "Selected item index:" << selectedLogID;
         int siteNumber = extractSiteIndexPC();
-        populateBaselinesPC(siteNumber, logID);
+        populateBaselinesPC(siteNumber, selectedLogID);
         } else {
             qDebug() << "No item is selected.";
         }
@@ -484,10 +484,10 @@ void MainWindow::handleComputerSiteSelectedChanged()
       ui->computerSessionsList->addItem(listItem);
     }
 
-    if (siteNumber - 1 < logs[0].beforeFrequencies.size() && siteNumber - 1 < logs[0].afterFrequencies.size()) {
-      // Safe to access the first log and its frequency data
-      float beforeFrequency = logs[0].beforeFrequencies[siteNumber - 1];
-      float afterFrequency = logs[0].afterFrequencies[siteNumber - 1];
+    if (siteNumber - 1 < logs[selectedLogID].beforeFrequencies.size() && siteNumber - 1 < logs[selectedLogID].afterFrequencies.size()) {
+      // Safe to access the current log and its frequency data
+      float beforeFrequency = logs[selectedLogID].beforeFrequencies[siteNumber - 1];
+      float afterFrequency = logs[selectedLogID].afterFrequencies[siteNumber - 1];
       // Populate the UI elements
       ui->computerBaselineFrequencyBefore->setText(QString::number(beforeFrequency, 'f', 2));
       ui->computerBaselineFrequencyAfter->setText(QString::number(afterFrequency, 'f', 2));
