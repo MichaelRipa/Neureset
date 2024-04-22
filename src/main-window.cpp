@@ -15,12 +15,10 @@ bool deleteFile(const QString& filePath) {
     // Helper file which removes the session logs file from previous runs of the program
     QFile file(filePath);
     if (!file.exists()) {
-        qDebug() << "File does not exist:" << filePath;
         return false;
     }
 
     if (file.remove()) {
-        qDebug() << "File deleted successfully:" << filePath;
         return true;
     } else {
         qDebug() << "Failed to delete file:" << filePath;
@@ -47,7 +45,6 @@ int MainWindow::extractSiteIndexPC() {
     bool ok;
     siteNumber = parts.at(1).toInt(&ok);  // Converts the second part to integer
     if (ok) {
-      qDebug() << "Site number is:" << siteNumber;
       return siteNumber;
     } else {
       qDebug() << "Conversion failed";
@@ -79,42 +76,14 @@ void MainWindow::populateBaselinesPC(int siteNumber, int logID) {
 }
 
 void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* scene) {
-    //QGraphicsView* view = new QGraphicsView(scene);
-    //view->scale(1000, 1000);
-
-
 
     QPen pen(Qt::blue, 1); // Customize color and line thickness
     scene->setBackgroundBrush(QBrush(Qt::lightGray));  // Light gray background might help in visibility
 
-    for (vector<float> innerData: waveData) {
-        for (float ele: innerData) {
-            //qDebug() << ele;
-        }
-       // qDebug() << innerData.size();
-    }
-
-  //  exit(0);
-    /*qDebug() << "Clearing scene and adding new items";*/
     scene->clear();
 
     int itemCount = 0; // To count how many lines are added
 
-    // We need at least two points to start drawing lines
-    /*
-    if (waveData.size() < 2) {
-        qDebug() << "Not enough data to plot lines. Need at least two points.";
-        return;
-    }
-
-    // Ensure each wave data has exactly two floats
-    for (size_t i = 0; i < waveData.size(); i++) {
-        if (waveData[i].size() != 2) {
-            qDebug() << "Skipping wave with incorrect length:" << waveData[i].size();
-            continue;
-        }
-    }
-    */
     // Draw lines between consecutive waves
     for (int i = 1; i < waveData.size() / 2; ++i) {
         float x1 =  i - 1; // waveData[i - 1][0];
@@ -122,22 +91,10 @@ void plotData(const std::vector<std::vector<float>>& waveData, QGraphicsScene* s
         float x2 = i; // waveData[i][0];
         float y2 = waveData[i][1] * 300;
 
-        if (i == 1) {  // Additional debug for first line
-            //qDebug() << "Drawing first line from (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")";
-        }
 
         scene->addLine(x1, y1, x2, y2, pen);
         itemCount++;
     }
-
-    /*qDebug() << "Items added to scene:" << itemCount;
-    if (itemCount > 0) {
-        scene->setSceneRect(scene->itemsBoundingRect());  // Update scene rect to encompass all items
-        qDebug() << "Scene rect after update:" << scene->sceneRect();
-    } else {
-        qDebug() << "No lines were added to the scene.";
-    }
-    */
 }
 
 
@@ -210,13 +167,8 @@ void MainWindow::init_render() {
 
 
 void MainWindow::render() {
-    //qDebug("Rendering.");
     renderNeuresetDevice();
     renderAdminPanel();
-    //renderPC();
-
-
-
 }
 
 void MainWindow::renderNeuresetDevice()
@@ -312,13 +264,6 @@ void MainWindow::renderAdminPanel() {
         return;
     }
 
-  /*
-    qDebug() << "Data points to plot:" << data.size();
-    if (!data.empty()) {
-        qDebug() << "Sample data point:" << data[0][0] << "," << data[0][1];
-    }
-  */
-
     plotData(data, ui->wavePlot->scene());
     ui->wavePlot->scene()->setSceneRect(ui->wavePlot->scene()->itemsBoundingRect());
     ui->wavePlot->fitInView(ui->wavePlot->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
@@ -384,7 +329,6 @@ void MainWindow::handleSessionCompleteBackButtonPressed()
 {
   model->getNeuresetDevice()->setCurrentScreen(NeuresetDevice::Screen::MainMenu);
   render();
-  qDebug() << "TODO: Verify MainWindow::handleSessionCompleteBackButtonPressed() doesn't need to perform any additional steps asides from changing screen state and rendering.";
 }
 
 void MainWindow::handleSessionIncompleteBackButtonPressed()
@@ -401,11 +345,8 @@ void MainWindow::handleSessionLogsBackButtonPressed()
 
 void MainWindow::handleSessionLogsClearAllButtonPressed()
 {
-
   model->getNeuresetDevice()->clearAllSessions();
   ui->sessionLogsList->clear();
-  //qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsClearAllButtonPressed()";
-  //qDebug() << "Currently, it clears the sessions directly from NeuresetDevice, it still needs to reflect the changes to the UI";
 }
 
 void MainWindow::handleSessionLogsUploadAllButtonPressed() {
@@ -413,9 +354,6 @@ qDebug() << "Uploading sessions: (num sessions) - " << model->getNeuresetDevice(
   model->getNeuresetDevice()->uploadAllSessions();
   handleComputerSiteSelectedChanged();
   handleSessionLogsButtonPressed();
-  // Call the handler for displaying the PC logs
-  //qDebug() << "TODO: Finish implementing MainWindow::handleSessionLogsUploadAllButtonPressed()";
-
 }
 
 void MainWindow::handleSaveDateAndTimeChangesButtonPressed()
@@ -459,7 +397,6 @@ void MainWindow::handleComputerSessionSelectedChanged() {
         // Get the index of the selected item
         selectedLogID = ui->computerSessionsList->row(selectedItem);
 
-        qDebug() << "Selected item index:" << selectedLogID;
         int siteNumber = extractSiteIndexPC();
         populateBaselinesPC(siteNumber, selectedLogID);
         } else {
@@ -472,7 +409,6 @@ void MainWindow::handleComputerSiteSelectedChanged()
   int siteNumber = extractSiteIndexPC();
 
   std::vector<SessionLog> logs = model->getNeuresetDevice()->getPCInterface()->loadAllSessionLogs();
-  qDebug() << "Current size of session logs: " << logs.size();
   ui->computerSessionsList->clear();
   ui->computerBaselineFrequencyBefore->clear();
   ui->computerBaselineFrequencyAfter->clear();
@@ -481,7 +417,6 @@ void MainWindow::handleComputerSiteSelectedChanged()
     int lid = 1;
     for (const auto& log : logs) {
       QString formattedDate = log.startTime.toString("yyyy-MM-dd.hh:mm");
-      qDebug() << "Extracted date: " << formattedDate;
       QString listItem = QString::number(lid) + ". " + formattedDate;
       lid += 1;
       ui->computerSessionsList->addItem(listItem);

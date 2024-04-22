@@ -22,18 +22,15 @@ void EEGHeadset::setNeuresetDevice(NeuresetDevice *neuresetDevice)
 
 void EEGHeadset::connect()
 {
-    qDebug("Connecting.");
+    qDebug("Headset Connected!");
     if (connected)
         return;
-    qDebug("A");
     // This is just a trivial implementation where either all sites are connected or disconnected
     for (int i = 0; i < numSites; ++i) {
       electrodes[i]->setConnectionStatus(true);
      }
-    qDebug("B");
     connected = true;
     neuresetDevice->eegHeadsetConnected();
-    qDebug("C");
 
 }
 
@@ -42,6 +39,7 @@ void EEGHeadset::disconnect()
     if (!connected)
         return;
     // This is just a trivial implementation where either all sites are connected or disconnected
+    qDebug("Headset Disconnected!");
     for (int i = 0; i < numSites; ++i) {
       electrodes[i]->setConnectionStatus(false);
      }
@@ -55,7 +53,6 @@ std::vector<float>  EEGHeadset::getBaselineFrequencies() {
   std::vector<float> freqs(electrodes.size());
   for (size_t i = 0; i < electrodes.size(); ++i) {
     float f = getBaselineFrequencyForSite(i);
-    qDebug() << "Frequency at site " << i << " " << f;
     freqs[i] = f;
   }
   return freqs;

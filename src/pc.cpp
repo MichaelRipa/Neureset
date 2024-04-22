@@ -34,7 +34,6 @@ bool PC::fileExists(std::string filename) {
 
 void PC::uploadData(std::vector<Session*> sessions) {
 
-  qDebug() << "In PC::uploadData()";
   std::string homeDir = getHomeDirectory(); // Get the home directory path
   std::string fullPath = homeDir + "/" + PC_FILENAME.toStdString(); // Append the filename to the home directory path
 
@@ -58,12 +57,10 @@ void PC::uploadData(std::vector<Session*> sessions) {
       }
       file << "\n";
   }
-  qDebug() << "Session size: " << sessions.size();
 
   // Iterate over each session and write the data
   for (size_t i = 0; i < sessions.size(); ++i) {
 
-      qDebug() << "Iterating over sessions: " << i;
       const auto session = sessions[i];
       file << i + 1 << ", " << session->getStartTime().toString("yyyy-MM-dd.hh:mm").toStdString();
 
@@ -75,7 +72,6 @@ void PC::uploadData(std::vector<Session*> sessions) {
           float before = j < beforeFrequencies.size() ? beforeFrequencies[j] : 0.0f;
           float after = j < afterFrequencies.size() ? afterFrequencies[j] : 0.0f;
           file << ", " << before << ", " << after;
-          qDebug() << "Session" << i << "Site" << j << "Before frequency:" << before << "After frequency:" << after;
 
       }
       file << "\n";
@@ -91,7 +87,6 @@ std::vector<SessionLog> PC::loadSessionLogs() {
     std::string fullPath = homeDir + "/" + PC_FILENAME.toStdString();
 
     std::ifstream file(fullPath);
-    qDebug() << "In PC::loadSessionLogs()";
 
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << fullPath << std::endl;
@@ -129,6 +124,5 @@ std::vector<SessionLog> PC::loadSessionLogs() {
     }
 
     file.close();
-    qDebug() << "Finished loading logs in PC::loadSessionLogs(): (num logs) " << logs.size();
     return logs;
 }
