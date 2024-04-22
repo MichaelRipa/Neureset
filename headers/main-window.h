@@ -28,6 +28,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Model* model;
+    int selectedLogID = 0;
 
     // Opacity effects for turned off neureset LEDs
     // Note: cannot be shared so 3 instances required
