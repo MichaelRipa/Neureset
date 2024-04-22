@@ -11,7 +11,6 @@ and it allows for easy access from the model's components.
 
 #include <QObject>
 #include <QTimer>
-#include <event-queue.h>
 #include <event.h>
 #include <neureset-device.h>
 #include <eeg-headset.h>

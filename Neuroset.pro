@@ -15,7 +15,6 @@ SOURCES += \
     src/main-window.cpp \
     src/model.cpp \
     src/eeg-headset.cpp \
-    src/event-queue.cpp \
     src/event.cpp \
     src/globals.cpp \
     src/interface.cpp \
@@ -34,7 +33,6 @@ HEADERS += \
     headers/main-window.h \
     headers/model.h \
     headers/eeg-headset.h \
-    headers/event-queue.h \
     headers/event.h \
     headers/globals.h \
     headers/interface.h \
