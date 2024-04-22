@@ -86,6 +86,12 @@ void EEGHeadset::applyTreatmentToSite(int siteIndex, float offset) {
   electrodes[siteIndex]->applyTreatmentToWaves(offset);
 }
 
+void EEGHeadset::reinitializeElectrodes() {
+  for (int i = 0; i < numSites; ++i) {
+    electrodes[i]->initializeElectrode();
+  }
+}
+
 std::vector<std::vector<float>> EEGHeadset::getSignal(int siteIndex, Band band) {
 /**
  * Retrieves a wave signal from a specified EEGHeadset site, formatted as a series of (time, amplitude) points.
